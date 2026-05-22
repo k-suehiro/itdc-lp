@@ -1,0 +1,184 @@
+/* LP共通：コーポレートサイト導線（配置・役割は統一、見た目はテーマで調整） */
+
+.lp-corp-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.lp-corp-header-link .lp-corp-ext-icon {
+    font-size: 0.65em;
+    opacity: 0.75;
+}
+
+/* dark（odomasy 等） */
+.lp-corp-theme-dark .lp-corp-header-link {
+    color: rgba(156, 163, 175, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    padding: 0.4rem 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.lp-corp-theme-dark .lp-corp-header-link:hover {
+    color: rgb(34, 211, 238);
+    border-color: rgba(34, 211, 238, 0.4);
+    background: rgba(6, 182, 212, 0.08);
+}
+
+/* light（itdc 等） */
+.lp-corp-theme-light .lp-corp-header-link {
+    color: #4b5563;
+    border: 1px solid rgba(0, 86, 179, 0.25);
+    border-radius: 9999px;
+    padding: 0.35rem 0.7rem;
+    background: transparent;
+}
+
+.lp-corp-theme-light .lp-corp-header-link:hover {
+    color: #0056b3;
+    border-color: #0056b3;
+    background: rgba(0, 86, 179, 0.05);
+}
+
+@media (max-width: 767px) {
+    .lp-corp-header-link {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.55rem;
+        max-width: 9.5rem;
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+/* CTA付近：会社情報を確認する */
+.lp-corp-cta-sub {
+    margin-top: 1.25rem;
+}
+
+.lp-corp-cta-sub-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+}
+
+.lp-corp-theme-dark .lp-corp-cta-sub-link {
+    color: #9ca3af;
+}
+
+.lp-corp-theme-dark .lp-corp-cta-sub-link:hover {
+    color: #22d3ee;
+}
+
+.lp-corp-theme-light .lp-corp-cta-sub-link {
+    color: #6b7280;
+}
+
+.lp-corp-theme-light .lp-corp-cta-sub-link:hover {
+    color: #0056b3;
+}
+
+/* フッター */
+.lp-corp-footer {
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    padding: 2rem 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+.lp-corp-theme-dark .lp-corp-footer {
+    background: #000;
+    color: #9ca3af;
+}
+
+.lp-corp-theme-light .lp-corp-footer {
+    background: #f8fafc;
+    color: #4b5563;
+    border-top-color: #e5e7eb;
+}
+
+.lp-corp-footer-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+
+.lp-corp-footer-note {
+    margin: 0 0 1.25rem;
+    font-size: 0.8125rem;
+    color: inherit;
+    opacity: 0.9;
+}
+
+.lp-corp-footer-operator {
+    margin: 0 0 0.75rem;
+    font-weight: 600;
+}
+
+.lp-corp-theme-dark .lp-corp-footer-operator {
+    color: #d1d5db;
+}
+
+.lp-corp-theme-light .lp-corp-footer-operator {
+    color: #1f2937;
+}
+
+.lp-corp-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lp-corp-footer-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.lp-corp-theme-dark .lp-corp-footer-links a {
+    color: #22d3ee;
+}
+
+.lp-corp-theme-dark .lp-corp-footer-links a:hover {
+    color: #67e8f9;
+}
+
+.lp-corp-theme-light .lp-corp-footer-links a {
+    color: #0056b3;
+}
+
+.lp-corp-theme-light .lp-corp-footer-links a:hover {
+    color: #004494;
+}
+
+.lp-corp-footer-sep {
+    opacity: 0.5;
+    user-select: none;
+}
+
+.lp-corp-footer-copy {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(128, 128, 128, 0.15);
+    font-size: 0.75rem;
+    opacity: 0.7;
+}

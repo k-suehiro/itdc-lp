@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>odomasy - 次世代ドキュメント統合管理システム</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Flag Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.0.0/css/flag-icons.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                        mono: ['Orbitron', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#050505',
+                            navy: '#0B0F19',
+                            cyan: '#06b6d4',
+                            purple: '#8b5cf6',
+                            blue: '#3b82f6',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Advanced Effects */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+        }
+
+        .section-divider {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+
+        .section-divider svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 150px;
+        }
+
+        .section-divider .shape-fill {
+            fill: #0B0F19;
+        }
+
+        /* Scroll Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Background Mesh Gradient */
+        .bg-mesh {
+            background-color: hsla(220, 60%, 8%, 1);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #22d3ee, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Active Navigation Link Styles */
+        .nav-link.active {
+            color: #22d3ee !important;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #22d3ee, #8b5cf6);
+            border-radius: 2px;
+        }
+
+        .nav-link.active.contact-btn {
+            background: rgba(6, 182, 212, 0.2) !important;
+            border-color: rgba(6, 182, 212, 0.5) !important;
+        }
+
+        /* Feature Card Styles */
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card-content {
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .feature-card-content ul {
+            flex: 1;
+        }
+        
+        .feature-card button {
+            margin-top: auto;
+        }
+
+        .feature-card-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(11, 15, 25, 0), rgba(11, 15, 25, 0.98));
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:not(.expanded) .feature-card-gradient {
+            opacity: 1;
+        }
+    </style>
+    <link rel="stylesheet" href="css/lp-corporate-links.css">
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="font-mono text-2xl font-bold tracking-tighter flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded bg-[#0B0F19] relative flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-layer-group text-cyan-400 text-lg"></i>
+                </div>
+                <span class="text-white">odomasy</span>
+            </a>
+            <div class="flex items-center gap-3 md:gap-6">
+                <div data-lp-corp="header" data-lp-corp-theme="dark" class="shrink-0"></div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="features">機能</a>
+                    <a href="#detailed-features" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="detailed-features">機能詳細</a>
+                    <a href="#architecture" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="architecture">システム構成</a>
+                    <a href="#languages" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="languages">対応言語</a>
+                    <a href="#faq" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="faq">FAQ</a>
+                    <a href="#contact" class="nav-link px-6 py-2 rounded-full bg-white/10 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-500/50 text-white transition-all duration-300 text-sm font-medium backdrop-blur-sm" data-section="contact">
+                        お問い合わせ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-navy pt-20">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 w-full h-full">
+            <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            <div class="absolute top-0 -right-4 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
+        </div>
+
+        <div class="relative container mx-auto px-6 text-center z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 mb-8 animate-float">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                </span>
+                <span class="text-xs font-mono text-cyan-400 tracking-wider">ONLINE DOCUMENT MANAGEMENT SYSTEM</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-9xl font-black mb-8 tracking-tight font-mono leading-tight">
+                <span class="block text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-500">odomasy</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
+                ドキュメント制作を<span class="text-cyan-400 font-bold">進化させる</span>。<br>
+                執筆・翻訳・組版を統合する、次世代クラウドプラットフォーム。
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="#features" class="group relative px-8 py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg text-white font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.6)]">
+                    機能を見る
+                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white font-medium backdrop-blur-sm transition-all">
+                    デモを依頼
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <i class="fa-solid fa-chevron-down text-gray-500 text-xl"></i>
+        </div>
+    </header>
+
+    <!-- Problem & Solution Section -->
+    <section class="py-32 bg-brand-dark relative">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Problem Side -->
+                <div class="reveal">
+                    <h2 class="font-mono text-4xl font-bold mb-8 text-white">
+                        <span class="text-red-500">MESSY</span> : 現状の問題点
+                    </h2>
+                    <div class="space-y-6">
+                        <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500 group hover:bg-red-900/10 transition-colors">
+                            <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                                <i class="fa-solid fa-file-circle-xmark text-red-500"></i>
+                                データの分断
+                            </h3>
+                            <p class="text-gray-400 text-sm">ファイル受け渡しによるバージョン管理の崩壊。どれが最新かわからない。</p>
+                        </div>
+                        <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500 group hover:bg-red-900/10 transition-colors">
+                            <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                                <i class="fa-solid fa-hourglass-half text-red-500"></i>
+                                時間の浪費
+                            </h3>
+                            <p class="text-gray-400 text-sm">DTPや組版の手戻りや修正作業の繰り返しによるスケジュールの遅延。</p>
+                        </div>
+                        <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500 group hover:bg-red-900/10 transition-colors">
+                            <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                                <i class="fa-solid fa-bug text-red-500"></i>
+                                品質のバラつき
+                            </h3>
+                            <p class="text-gray-400 text-sm">属人的なチェック作業による、表記ゆれや単純ミスの多発。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solution Side -->
+                <div class="reveal relative">
+                    <div class="absolute -inset-10 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-3xl rounded-full opacity-50"></div>
+                    <div class="relative glass-panel p-10 rounded-2xl border border-cyan-500/30">
+                        <h2 class="font-mono text-4xl font-bold mb-8 text-white">
+                            <span class="text-cyan-400">CLEAN</span> : 解決策
+                        </h2>
+                        <p class="text-lg text-gray-300 mb-8 leading-relaxed">
+                            odomasyは、<span class="text-white font-bold border-b border-cyan-500">執筆・翻訳・組版</span>の全工程をクラウド上でシームレスに統合します。
+                            複雑なワークフローに「効率」をもたらし、クリエイティブな業務への集中を実現します。
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4 text-gray-200">
+                                <div class="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                シームレスなデータ連携
+                            </li>
+                            <li class="flex items-center gap-4 text-gray-200">
+                                <div class="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                    <i class="fa-solid fa-eye"></i>
+                                </div>
+                                リアルタイムな進捗可視化
+                            </li>
+                            <li class="flex items-center gap-4 text-gray-200">
+                                <div class="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                    <i class="fa-solid fa-globe"></i>
+                                </div>
+                                場所を選ばないクラウド環境
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features (Grid) -->
+    <section id="features" class="py-32 bg-brand-navy relative overflow-hidden">
+        <!-- Background Decoration -->
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-cyan-900/10 to-transparent pointer-events-none"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">Core Features</h2>
+                <p class="text-gray-400">プロフェッショナルの要求に応える、妥協なき機能群</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-code text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-mono">XML Syntax Analysis</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        構造違反をリアルタイムに検知。編集内容は即座にプレビューへ反映され、迷いのない執筆体験を提供します。
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-100">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-halved text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-mono">Quality Assurance</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        スペル、数値、記号重複などを自動チェック。人間の限界を超えた精度で、ドキュメントの品質を担保します。
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-200">
+                    <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-invoice text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-mono">Diff Comparison</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        新旧の差分をPDFで可視化。変更・削除箇所をチェンジバーで明示し、確認工数を劇的に削減します。
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal">
+                    <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bolt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-mono">High Speed Layout</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        1000ページ規模の大量文書も高速処理。自動組版エンジンがPDF書き出しの待機時間を劇的に短縮します。
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-100">
+                    <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-earth-americas text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-mono">Global Translation</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        翻訳メモリと独自の仮翻訳エンジンにより、コストを最小化。世界42言語への展開を強力に支援します。
+                    </p>
+                </div>
+
+                <!-- Feature 6 (Project Management) -->
+                <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-200 bg-gradient-to-br from-white/5 to-transparent">
+                    <div class="w-14 h-14 bg-gray-700 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-list-check text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-mono">Project Management</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        プロジェクト全体を俯瞰する統合管理コンソール。進捗管理からユーザー管理までを一元化。
+                    </p>
+                    <div class="mt-4 inline-block px-3 py-1 rounded bg-white/10 text-xs text-white">
+                        導入実績: 大手家電メーカー他
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Features -->
+    <section id="detailed-features" class="py-32 bg-brand-dark relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">Detailed Features</h2>
+                <p class="text-gray-400">包括的な機能群で、あらゆるドキュメント制作ニーズに対応</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-7xl mx-auto items-start">
+                <!-- Project Management -->
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-cyan-500 reveal feature-card" id="management-card">
+                    <div class="feature-card-content">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-list-check text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold font-mono">管理機能</h3>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>プロジェクト作成/編集/削除</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>マニュアル作成/編集/削除</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>言語作成/編集/削除</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>プロジェクト/マニュアル流用</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>XMLアップロード/ダウンロード</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>イラスト管理</span>
+                        </li>
+                        <li class="flex items-start gap-2 management-more hidden">
+                        <li class="flex items-start gap-2 management-more hidden">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>テキストエンティティ管理</span>
+                        </li>
+                        <li class="flex items-start gap-2 management-more hidden">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>執筆者/翻訳者アサインメント</span>
+                        </li>
+                        <li class="flex items-start gap-2 management-more hidden">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>ドラフト管理</span>
+                        </li>
+                        <li class="flex items-start gap-2 management-more hidden">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>翻訳進捗管理</span>
+                        </li>
+                        <li class="flex items-start gap-2 management-more hidden">
+                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
+                            <span>ユーザー管理</span>
+                        </li>
+                        </ul>
+                        <div class="feature-card-gradient"></div>
+                    </div>
+                    <button onclick="toggleManagement()" class="mt-4 text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-2 transition-colors relative z-10">
+                        <span id="management-toggle-text">もっと見る</span>
+                        <i id="management-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Writing Features -->
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-purple-500 reveal transition-delay-100 feature-card" id="writing-card">
+                    <div class="feature-card-content">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-pen text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold font-mono">執筆機能</h3>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>プレビュー表示</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>構造ツリー/目次ツリー表示</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>構造編集・テキスト編集</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>表編集</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>イラスト挿入</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>テキストエンティティ挿入</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>特殊文字挿入</span>
+                        </li>
+                        <li class="flex items-start gap-2 writing-more hidden">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>相互参照挿入</span>
+                        </li>
+                        <li class="flex items-start gap-2 writing-more hidden">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>索引マーカー挿入</span>
+                        </li>
+                        <li class="flex items-start gap-2 writing-more hidden">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>QAチェック・バリデーション</span>
+                        </li>
+                        <li class="flex items-start gap-2 writing-more hidden">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>編集履歴表示</span>
+                        </li>
+                        <li class="flex items-start gap-2 writing-more hidden">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>変更箇所色づけ表示</span>
+                        </li>
+                        <li class="flex items-start gap-2 writing-more hidden">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>コメント付与</span>
+                        </li>
+                        </ul>
+                        <div class="feature-card-gradient"></div>
+                    </div>
+                    <button onclick="toggleWriting()" class="mt-4 text-purple-400 hover:text-purple-300 text-sm flex items-center gap-2 transition-colors relative z-10">
+                        <span id="writing-toggle-text">もっと見る</span>
+                        <i id="writing-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Translation Support -->
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-indigo-500 reveal transition-delay-200 feature-card" id="translation-card">
+                    <div class="feature-card-content">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-language text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold font-mono">翻訳支援機能</h3>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>TMXアップロード/ダウンロード</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>メモリメンテナンス</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>用語管理</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>仮翻訳</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>プレビュー表示</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>セグメント/テキスト検索</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>繰り返しセグメント訳文流用</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>ファジーセグメント訳文流用</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
+                            <span>スペルチェッカー</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>QAチェック</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>原文/訳文テキスト検索</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>セントラルメモリマージ</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>翻訳メモリメンテナンス</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>用語集メンテナンス</span>
+                        </li>
+                        <li class="flex items-start gap-2 translation-more hidden">
+                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
+                            <span>コメント付与</span>
+                        </li>
+                        </ul>
+                        <div class="feature-card-gradient"></div>
+                    </div>
+                    <button onclick="toggleTranslation()" class="mt-4 text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-2 transition-colors relative z-10">
+                        <span id="translation-toggle-text">もっと見る</span>
+                        <i id="translation-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Publish Features -->
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-green-500 reveal feature-card" id="publish-card">
+                    <div class="feature-card-content">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-file-pdf text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold font-mono">パブリッシュ機能</h3>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
+                            <span>PDF出力</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>改ページ処理有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>章扉の有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>タイトルの背景色有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>トンボ有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>ラベル有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>パスワードによるセキュリティ有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>カラーON/OFF</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>条件別テキストの表示</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>生成されるPDFページ調整</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>ページ番号有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>索引有無</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>ページ開始番号を指定</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>ヘッダー表示有無</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
+                            <span>校正用PDF出力</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>図版用画像ファイル名の表示</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>図版の通し番号の表示</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>表の通し番号の表示</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>テキストエンティティ箇所の色付け</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>翻訳不要箇所の色付け</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>定型文の色付け</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>相互参照箇所の色付け</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>条件別テキスト</span>
+                        </li>
+                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
+                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
+                            <span>変更履歴箇所色付け</span>
+                        </li>
+                        <li class="flex items-start gap-2 publish-more hidden">
+                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
+                            <span>HTML出力</span>
+                        </li>
+                        <li class="flex items-start gap-2 publish-more hidden">
+                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
+                            <span>XML差分比較</span>
+                        </li>
+                        <li class="flex items-start gap-2 publish-more hidden">
+                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
+                            <span>新旧XMLの差分を可視化</span>
+                        </li>
+                        <li class="flex items-start gap-2 publish-more hidden">
+                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
+                            <span>変更箇所の詳細表示</span>
+                        </li>
+                        <li class="flex items-start gap-2 publish-more hidden">
+                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
+                            <span>PDF差分出力</span>
+                        </li>
+                        </ul>
+                        <div class="feature-card-gradient"></div>
+                    </div>
+                    <button onclick="togglePublish()" class="mt-4 text-green-400 hover:text-green-300 text-sm flex items-center gap-2 transition-colors relative z-10">
+                        <span id="publish-toggle-text">もっと見る</span>
+                        <i id="publish-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture & Specs -->
+    <section id="architecture" class="py-32 bg-brand-navy relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">System Architecture</h2>
+                <p class="text-gray-400 mb-4">堅牢なインフラストラクチャで、安定したパフォーマンスを実現</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Server/Client Layout -->
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 mb-32">
+                <!-- Server -->
+                <div class="glass-panel p-8 rounded-2xl border-t-4 border-cyan-500 reveal">
+                    <h3 class="text-2xl font-mono font-bold mb-6 flex items-center gap-3 text-cyan-400">
+                        <i class="fa-solid fa-server"></i> Server Side
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between border-b border-gray-800 pb-2">
+                            <span class="text-gray-400 font-mono text-sm">Web Server</span>
+                            <span class="font-bold text-white">Apache</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-800 pb-2">
+                            <span class="text-gray-400 font-mono text-sm">Database</span>
+                            <span class="font-bold text-white">MySQL</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-800 pb-2">
+                            <span class="text-gray-400 font-mono text-sm">Language</span>
+                            <span class="font-bold text-white">PHP</span>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-800 pb-2">
+                            <span class="text-gray-400 font-mono text-sm">Encryption</span>
+                            <span class="font-bold text-white">OpenSSL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client -->
+                <div class="glass-panel p-8 rounded-2xl border-t-4 border-purple-500 reveal transition-delay-100">
+                    <h3 class="text-2xl font-mono font-bold mb-6 flex items-center gap-3 text-purple-400">
+                        <i class="fa-solid fa-desktop"></i> Client Side
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-white/5 p-4 rounded-lg mb-4">
+                            <p class="text-sm text-gray-300 mb-2">Webブラウザベースの専用アプリケーション</p>
+                            <div class="flex gap-2">
+                                <span class="px-2 py-1 bg-black/50 rounded text-xs text-gray-400 border border-gray-700">Windows</span>
+                                <span class="px-2 py-1 bg-black/50 rounded text-xs text-gray-400 border border-gray-700">.NET Framework</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-xs text-purple-400 font-mono mb-1">INPUT</div>
+                                <div class="font-bold">XML, EPS</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-purple-400 font-mono mb-1">OUTPUT</div>
+                                <div class="font-bold">XML, PDF, HTML</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Languages Section -->
+    <section id="languages" class="py-32 bg-brand-dark relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">Supported Languages</h2>
+                <p class="text-gray-400 mb-4">世界42言語に対応し、グローバルビジネスを強力にサポート</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Global Map Area -->
+            <div class="glass-panel rounded-3xl overflow-hidden relative min-h-[400px] flex items-center justify-center bg-brand-navy reveal">
+                <!-- Abstract Map Background -->
+                <div class="absolute inset-0 opacity-30 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center bg-no-repeat filter invert"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-transparent"></div>
+                
+                <div class="relative z-10 text-center p-10">
+                    <div class="text-8xl font-black font-mono text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600 mb-2">
+                        42
+                    </div>
+                    <p class="text-gray-400 max-w-xl mx-auto mb-8">
+                        日本語、英語、中国語をはじめ、欧州各国の言語に対応。<br>
+                        グローバルビジネスの加速を妨げません。
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto opacity-70">
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-gb text-lg"></span> English</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-jp text-lg"></span> Japanese</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-fr text-lg"></span> French</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-ca text-lg"></span> French (Canada)</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-es text-lg"></span> Spanish</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-it text-lg"></span> Italian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-pt text-lg"></span> Portuguese</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-br text-lg"></span> Portuguese (Brazil)</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-de text-lg"></span> German</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-nl text-lg"></span> Dutch</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-dk text-lg"></span> Danish</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-se text-lg"></span> Swedish</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-fi text-lg"></span> Finnish</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-no text-lg"></span> Norwegian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-ru text-lg"></span> Russian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-ua text-lg"></span> Ukrainian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-cn text-lg"></span> Chinese (Simplified)</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-tw text-lg"></span> Chinese (Traditional)</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-kr text-lg"></span> Korean</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-sa text-lg"></span> Arabic</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-cz text-lg"></span> Czech</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-bg text-lg"></span> Bulgarian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-gr text-lg"></span> Greek</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-il text-lg"></span> Hebrew</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-hu text-lg"></span> Hungarian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-mk text-lg"></span> Macedonian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-pl text-lg"></span> Polish</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-ro text-lg"></span> Romanian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-sk text-lg"></span> Slovak</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-si text-lg"></span> Slovenian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-hr text-lg"></span> Croatian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-za text-lg"></span> Afrikaans</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-is text-lg"></span> Icelandic</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-id text-lg"></span> Indonesian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-lt text-lg"></span> Lithuanian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-my text-lg"></span> Malay</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-rs text-lg"></span> Serbian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-vn text-lg"></span> Vietnamese</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-th text-lg"></span> Thai</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-ee text-lg"></span> Estonian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-lv text-lg"></span> Latvian</span>
+                        <span class="px-3 py-2 bg-white/10 rounded-lg text-sm flex items-center gap-2 hover:bg-white/20 hover:scale-105 transition-all cursor-pointer"><span class="fi fi-ph text-lg"></span> Tagalog</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-32 bg-brand-navy relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">FAQ</h2>
+                <p class="text-gray-400">よくあるご質問</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="glass-panel p-6 rounded-xl reveal">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                        <i class="fa-solid fa-question-circle text-cyan-400"></i>
+                        デモンストレーションは可能ですか？
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        はい、デモンストレーションをご用意しています。実際の操作を体験していただき、ご質問にもお答えします。お気軽にお問い合わせください。
+                    </p>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="glass-panel p-6 rounded-xl reveal transition-delay-100">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                        <i class="fa-solid fa-question-circle text-cyan-400"></i>
+                        XML対応について教えてください
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        odomasyはXML形式のドキュメントに完全対応しています。XMLの構造解析、バリデーション、編集、組版まで一貫してサポートし、構造化されたドキュメント制作を効率的に行えます。既存のXMLファイルのアップロードや、XML形式での出力も可能です。また、XMLへの文書解析なども弊社で対応いたしますので、既存の文書をXML形式に変換する作業も安心してお任せください。
+                    </p>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="glass-panel p-6 rounded-xl reveal transition-delay-200">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                        <i class="fa-solid fa-question-circle text-cyan-400"></i>
+                        翻訳機能は不要ですが、利用できますか？
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        はい、もちろん可能です。odomasyは柔軟な構成が可能で、翻訳機能を使わずに執筆機能とドキュメント管理、パブリッシュ機能のみの利用も可能です。お客様のニーズに合わせて必要な機能だけを選択してご利用いただけます。日本語のみのドキュメント制作や、翻訳を外部で行う場合など、様々な運用パターンに対応できます。
+                    </p>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="glass-panel p-6 rounded-xl reveal">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                        <i class="fa-solid fa-question-circle text-cyan-400"></i>
+                        提供方法について教えてください
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        odomasyはクラウドベースのサービスとして提供しています。インターネット接続があれば、どこからでもアクセス可能で、専用のサーバー構築やメンテナンスは不要です。最新の機能アップデートも自動的に反映され、常に最新の環境でご利用いただけます。セキュリティ面でも、クラウド環境での堅牢な保護機能を備えており、安心してご利用いただけます。
+                    </p>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="glass-panel p-6 rounded-xl reveal transition-delay-100">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                        <i class="fa-solid fa-question-circle text-cyan-400"></i>
+                        コンサルティングサービスは提供していますか？
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        はい、ドキュメント制作プロセスの最適化やワークフロー改善のためのコンサルティングサービスを提供しています。導入前の要件定義から、運用開始後の改善提案まで、お客様のニーズに合わせたサポートを行います。詳細はお問い合わせください。
+                    </p>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="glass-panel p-6 rounded-xl reveal transition-delay-200">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-3">
+                        <i class="fa-solid fa-question-circle text-cyan-400"></i>
+                        価格設定について教えてください
+                    </h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        お客様の規模やニーズに応じた柔軟な価格設定をご用意しています。スモールスタートプランから中規模企業向けプランまで、段階的な導入が可能です。初期費用を抑えて小規模から始め、成長に合わせて拡張できる料金体系となっています。詳細な価格については、お問い合わせいただければ最適なプランをご提案いたします。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="py-48 relative bg-gradient-to-b from-brand-navy to-black">
+        <div class="container mx-auto px-6 text-center reveal">
+            <h2 class="text-4xl md:text-6xl font-bold mb-8">Ready to <span class="gradient-text">Evolve?</span></h2>
+            <p class="text-gray-400 text-lg mb-12">
+                ドキュメント制作の未来は、ここから始まります。<br>
+                詳細な資料請求、デモンストレーションのご依頼はこちらから。
+            </p>
+            <a href="https://www.crestec.co.jp/contact/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-10 py-5 rounded-full bg-white text-black font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_50px_rgba(255,255,255,0.3)]" aria-label="お問い合わせ・デモ依頼（新しいタブで開きます）">
+                お問い合わせ・デモ依頼
+                <i class="fa-solid fa-arrow-up-right-from-square ml-3" aria-hidden="true"></i>
+            </a>
+            <div data-lp-corp="cta-sub" data-lp-corp-theme="dark"></div>
+        </div>
+    </section>
+
+    <!-- Footer（LP共通：運営会社・公式サイト導線） -->
+    <div data-lp-corp="footer" data-lp-corp-theme="dark" data-lp-corp-copyright="© 2026 CRESTEC IT Document Center All Rights Reserved."></div>
+
+    <!-- Scripts -->
+    <script src="js/lp-corporate-links.js"></script>
+    <script>
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-brand-navy/80', 'backdrop-blur-md', 'shadow-lg');
+            } else {
+                navbar.classList.remove('bg-brand-navy/80', 'backdrop-blur-md', 'shadow-lg');
+            }
+        });
+
+        // Active Navigation Link on Scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const navObserverOptions = {
+            threshold: 0.3,
+            rootMargin: '-100px 0px -50% 0px'
+        };
+
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active', 'contact-btn');
+                        if (link.getAttribute('data-section') === id) {
+                            link.classList.add('active');
+                            // お問い合わせボタンの特別な処理
+                            if (id === 'contact') {
+                                link.classList.add('contact-btn');
+                            }
+                        }
+                    });
+                }
+            });
+        }, navObserverOptions);
+
+        sections.forEach(section => {
+            navObserver.observe(section);
+        });
+
+        // Intersection Observer for Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Once revealed, stay revealed
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Toggle PDF Output features
+        function togglePdfOutput() {
+            const moreItems = document.querySelectorAll('.pdf-output-more');
+            const toggleText = document.getElementById('pdf-output-toggle-text');
+            const toggleIcon = document.getElementById('pdf-output-toggle-icon');
+            
+            moreItems.forEach(item => {
+                item.classList.toggle('hidden');
+            });
+            
+            if (toggleText.textContent === 'もっと見る') {
+                toggleText.textContent = '閉じる';
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+            } else {
+                toggleText.textContent = 'もっと見る';
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
+            }
+        }
+
+        // Toggle Proof PDF features
+        function toggleProofPdf() {
+            const moreItems = document.querySelectorAll('.proof-pdf-more');
+            const toggleText = document.getElementById('proof-pdf-toggle-text');
+            const toggleIcon = document.getElementById('proof-pdf-toggle-icon');
+            
+            moreItems.forEach(item => {
+                item.classList.toggle('hidden');
+            });
+            
+            if (toggleText.textContent === 'もっと見る') {
+                toggleText.textContent = '閉じる';
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+            } else {
+                toggleText.textContent = 'もっと見る';
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
+            }
+        }
+
+        // Equalize card heights when closed
+        function equalizeCardHeights() {
+            const cards = document.querySelectorAll('.feature-card:not(.expanded)');
+            if (cards.length === 0) return;
+            
+            let maxHeight = 0;
+            cards.forEach(card => {
+                // 一時的に高さの制限を解除して実際の高さを測定
+                const originalMinHeight = card.style.minHeight;
+                card.style.minHeight = 'auto';
+                const height = card.offsetHeight;
+                card.style.minHeight = originalMinHeight;
+                if (height > maxHeight) {
+                    maxHeight = height;
+                }
+            });
+            
+            // すべての閉じたカードに最大高さを適用
+            cards.forEach(card => {
+                card.style.height = maxHeight + 'px';
+            });
+        }
+
+        // Close all other cards
+        function closeOtherCards(currentCardId) {
+            const cardIds = ['management-card', 'writing-card', 'translation-card', 'publish-card'];
+            const cardConfigs = {
+                'management-card': {
+                    moreItems: '.management-more',
+                    toggleText: 'management-toggle-text',
+                    toggleIcon: 'management-toggle-icon'
+                },
+                'writing-card': {
+                    moreItems: '.writing-more',
+                    toggleText: 'writing-toggle-text',
+                    toggleIcon: 'writing-toggle-icon'
+                },
+                'translation-card': {
+                    moreItems: '.translation-more',
+                    toggleText: 'translation-toggle-text',
+                    toggleIcon: 'translation-toggle-icon'
+                },
+                'publish-card': {
+                    moreItems: '.publish-more',
+                    toggleText: 'publish-toggle-text',
+                    toggleIcon: 'publish-toggle-icon'
+                }
+            };
+
+            cardIds.forEach(cardId => {
+                if (cardId !== currentCardId) {
+                    const card = document.getElementById(cardId);
+                    if (card && card.classList.contains('expanded')) {
+                        const config = cardConfigs[cardId];
+                        const moreItems = card.querySelectorAll(config.moreItems);
+                        const toggleText = document.getElementById(config.toggleText);
+                        const toggleIcon = document.getElementById(config.toggleIcon);
+                        
+                        moreItems.forEach(item => {
+                            item.classList.add('hidden');
+                        });
+                        
+                        if (toggleText && toggleIcon) {
+                            toggleText.textContent = 'もっと見る';
+                            toggleIcon.classList.remove('fa-chevron-up');
+                            toggleIcon.classList.add('fa-chevron-down');
+                        }
+                        card.classList.remove('expanded');
+                        card.style.height = ''; // 高さの制限を解除
+                    }
+                }
+            });
+            // 閉じたカードの高さを再計算
+            setTimeout(() => {
+                equalizeCardHeights();
+            }, 10);
+        }
+
+        // Toggle Management features
+        function toggleManagement() {
+            const card = document.getElementById('management-card');
+            const moreItems = card.querySelectorAll('.management-more');
+            const toggleText = document.getElementById('management-toggle-text');
+            const toggleIcon = document.getElementById('management-toggle-icon');
+            
+            const isExpanding = toggleText.textContent === 'もっと見る';
+            
+            if (isExpanding) {
+                closeOtherCards('management-card');
+                card.style.height = ''; // 展開時は高さの制限を解除
+            }
+            
+            moreItems.forEach(item => {
+                item.classList.toggle('hidden');
+            });
+            
+            if (isExpanding) {
+                toggleText.textContent = '閉じる';
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+                card.classList.add('expanded');
+            } else {
+                toggleText.textContent = 'もっと見る';
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
+                card.classList.remove('expanded');
+                card.style.height = '';
+                setTimeout(() => {
+                    equalizeCardHeights();
+                }, 10);
+            }
+        }
+
+        // Toggle Writing features
+        function toggleWriting() {
+            const card = document.getElementById('writing-card');
+            const moreItems = card.querySelectorAll('.writing-more');
+            const toggleText = document.getElementById('writing-toggle-text');
+            const toggleIcon = document.getElementById('writing-toggle-icon');
+            
+            const isExpanding = toggleText.textContent === 'もっと見る';
+            
+            if (isExpanding) {
+                closeOtherCards('writing-card');
+                card.style.height = ''; // 展開時は高さの制限を解除
+            }
+            
+            moreItems.forEach(item => {
+                item.classList.toggle('hidden');
+            });
+            
+            if (isExpanding) {
+                toggleText.textContent = '閉じる';
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+                card.classList.add('expanded');
+            } else {
+                toggleText.textContent = 'もっと見る';
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
+                card.classList.remove('expanded');
+                card.style.height = '';
+                setTimeout(() => {
+                    equalizeCardHeights();
+                }, 10);
+            }
+        }
+
+        // Toggle Translation features
+        function toggleTranslation() {
+            const card = document.getElementById('translation-card');
+            const moreItems = card.querySelectorAll('.translation-more');
+            const toggleText = document.getElementById('translation-toggle-text');
+            const toggleIcon = document.getElementById('translation-toggle-icon');
+            
+            const isExpanding = toggleText.textContent === 'もっと見る';
+            
+            if (isExpanding) {
+                closeOtherCards('translation-card');
+                card.style.height = ''; // 展開時は高さの制限を解除
+            }
+            
+            moreItems.forEach(item => {
+                item.classList.toggle('hidden');
+            });
+            
+            if (isExpanding) {
+                toggleText.textContent = '閉じる';
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+                card.classList.add('expanded');
+            } else {
+                toggleText.textContent = 'もっと見る';
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
+                card.classList.remove('expanded');
+                card.style.height = '';
+                setTimeout(() => {
+                    equalizeCardHeights();
+                }, 10);
+            }
+        }
+
+        // Toggle Publish features
+        function togglePublish() {
+            const card = document.getElementById('publish-card');
+            const moreItems = card.querySelectorAll('.publish-more');
+            const toggleText = document.getElementById('publish-toggle-text');
+            const toggleIcon = document.getElementById('publish-toggle-icon');
+            
+            const isExpanding = toggleText.textContent === 'もっと見る';
+            
+            if (isExpanding) {
+                closeOtherCards('publish-card');
+                card.style.height = ''; // 展開時は高さの制限を解除
+            }
+            
+            moreItems.forEach(item => {
+                item.classList.toggle('hidden');
+            });
+            
+            if (isExpanding) {
+                toggleText.textContent = '閉じる';
+                toggleIcon.classList.remove('fa-chevron-down');
+                toggleIcon.classList.add('fa-chevron-up');
+                card.classList.add('expanded');
+            } else {
+                toggleText.textContent = 'もっと見る';
+                toggleIcon.classList.remove('fa-chevron-up');
+                toggleIcon.classList.add('fa-chevron-down');
+                card.classList.remove('expanded');
+                card.style.height = ''; // 高さの制限を解除
+                // 少し遅延を入れてから高さを再計算
+                setTimeout(() => {
+                    equalizeCardHeights();
+                }, 10);
+            }
+        }
+
+        // ページ読み込み時とリサイズ時に高さを統一
+        window.addEventListener('load', () => {
+            equalizeCardHeights();
+        });
+
+        window.addEventListener('resize', () => {
+            // 展開されていないカードの高さを再計算
+            const expandedCards = document.querySelectorAll('.feature-card.expanded');
+            expandedCards.forEach(card => {
+                card.style.height = '';
+            });
+            equalizeCardHeights();
+        });
+    </script>
+</body>
+</html>
