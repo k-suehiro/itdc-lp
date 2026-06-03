@@ -1368,7 +1368,9 @@
                 return startDeg + delta;
             }
 
-            /** 開始→終了（時計回り）→開始へ戻る（時計回りで1周）のキーフレーム */
+            /** 開始→終了（ゆっくり）→開始へ戻る（早く）のキーフレーム */
+            const PROGRAM_PHASE_TIME_RATIO = 0.78;
+
             function buildClockwiseLoopKeyframes(startDeg, endDegCW) {
                 const forward = endDegCW - startDeg;
                 if (forward >= 360) {
@@ -1377,10 +1379,10 @@
                         { transform: `rotate(${startDeg + 360}deg)`, offset: 1 }
                     ];
                 }
-                const forwardOffset = Math.max(forward / 360, 0.001);
+                const programTimeRatio = Math.min(Math.max(PROGRAM_PHASE_TIME_RATIO, 0.55), 0.9);
                 return [
                     { transform: `rotate(${startDeg}deg)`, offset: 0 },
-                    { transform: `rotate(${endDegCW}deg)`, offset: forwardOffset },
+                    { transform: `rotate(${endDegCW}deg)`, offset: programTimeRatio },
                     { transform: `rotate(${startDeg + 360}deg)`, offset: 1 }
                 ];
             }
@@ -1401,7 +1403,7 @@
                     duration: durationMs * motionScale,
                     iterations: Infinity,
                     direction: 'normal',
-                    easing: 'ease-in-out'
+                    easing: 'linear'
                 };
 
                 if (typeof minuteHand.animate === 'function') {
