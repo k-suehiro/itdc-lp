@@ -1371,6 +1371,10 @@
             /** 開始→終了（ゆっくり）→開始へ戻る（早く）のキーフレーム */
             const PROGRAM_PHASE_TIME_RATIO = 0.78;
 
+            function getProgramTimeRatio() {
+                return Math.min(Math.max(PROGRAM_PHASE_TIME_RATIO, 0.55), 0.9);
+            }
+
             function buildClockwiseLoopKeyframes(startDeg, endDegCW) {
                 const forward = endDegCW - startDeg;
                 if (forward >= 360) {
@@ -1379,11 +1383,25 @@
                         { transform: `rotate(${startDeg + 360}deg)`, offset: 1 }
                     ];
                 }
-                const programTimeRatio = Math.min(Math.max(PROGRAM_PHASE_TIME_RATIO, 0.55), 0.9);
+                const programTimeRatio = getProgramTimeRatio();
                 return [
                     { transform: `rotate(${startDeg}deg)`, offset: 0 },
                     { transform: `rotate(${endDegCW}deg)`, offset: programTimeRatio },
                     { transform: `rotate(${startDeg + 360}deg)`, offset: 1 }
+                ];
+            }
+
+            /** 短針: プログラム時間帯だけゆっくり動き、戻りは開始位置へパッと復帰 */
+            function buildHourHandLoopKeyframes(startDeg, endDegCW) {
+                const forward = endDegCW - startDeg;
+                if (forward < 0.01 || forward >= 360) return null;
+                const programTimeRatio = getProgramTimeRatio();
+                const snapOffset = Math.min(programTimeRatio + 0.001, 0.999);
+                return [
+                    { transform: `rotate(${startDeg}deg)`, offset: 0 },
+                    { transform: `rotate(${endDegCW}deg)`, offset: programTimeRatio },
+                    { transform: `rotate(${startDeg}deg)`, offset: snapOffset },
+                    { transform: `rotate(${startDeg}deg)`, offset: 1 }
                 ];
             }
 
@@ -1399,6 +1417,8 @@
 
                 const endDeg = handDegrees(end);
                 const minuteEndCW = clockwiseEndDeg(startDeg.minute, endDeg.minute);
+                const hourEndCW = clockwiseEndDeg(startDeg.hour, endDeg.hour);
+                const hourKeyframes = buildHourHandLoopKeyframes(startDeg.hour, hourEndCW);
                 const animOptions = {
                     duration: durationMs * motionScale,
                     iterations: Infinity,
@@ -1414,6 +1434,9 @@
                         buildClockwiseLoopKeyframes(startDeg.minute, minuteEndCW),
                         animOptions
                     );
+                    if (hourKeyframes) {
+                        hourHand.animate(hourKeyframes, animOptions);
+                    }
                 }
             }
 
