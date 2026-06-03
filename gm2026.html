@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 グローバルミーティング プログラム</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',    // slate-900
+                            primary: '#1e3a8a', // blue-900
+                            accent: '#06b6d4',  // cyan-500
+                            light: '#f8fafc',   // slate-50
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "linear-gradient(to right bottom, rgba(15, 23, 42, 0.9), rgba(30, 58, 138, 0.8)), url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* カスタムアニメーション */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* タイムラインの線 */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 1.5rem; /* 24px */
+            width: 2px;
+            background-color: #e2e8f0;
+            z-index: 0;
+        }
+        @media (min-width: 768px) {
+            .timeline-line::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        /* 開始時刻表示時計（時間帯テキスト左側） */
+        .start-clock-inline-slot {
+            display: inline-block;
+            flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+        .start-clock-inline-slot.start-clock--on-dark {
+            border-color: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.92);
+        }
+        .start-clock {
+            padding: 2px;
+            overflow: hidden;
+        }
+        .start-clock__face {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #fff;
+        }
+        .start-clock__face::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            border: 1px solid #e2e8f0;
+            pointer-events: none;
+        }
+        .start-clock__center {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #1e3a8a;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+        }
+        .start-clock__hand {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            transform-origin: 50% 100%;
+            border-radius: 2px;
+            z-index: 2;
+        }
+        .start-clock__hand--hour {
+            width: 3px;
+            margin-left: -1.5px;
+            height: 24%;
+            background: #475569;
+        }
+        .start-clock__hand--minute {
+            width: 2px;
+            margin-left: -1px;
+            height: 34%;
+            background: #1e3a8a;
+        }
+        .start-clock--accent .start-clock__hand--minute,
+        .start-clock--accent .start-clock__center {
+            background: #06b6d4;
+        }
+        .start-clock--accent .start-clock__hand--hour {
+            background: #0891b2;
+        }
+        .start-clock--on-dark .start-clock__face {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .start-clock--dark-bg .start-clock__face {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .start-clock--dark-bg .start-clock__hand--hour {
+            background: #475569;
+        }
+        .start-clock--dark-bg .start-clock__hand--minute,
+        .start-clock--dark-bg .start-clock__center {
+            background: #1e3a8a;
+        }
+
+        /* プログラム進行状況（当日の時刻のみで判定） */
+        .program-slot {
+            transition: opacity 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
+        }
+        .program-slot.program-past {
+            opacity: 0.55;
+            background-color: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+        }
+        .program-slot.program-past .program-title,
+        .program-slot.program-past h3 {
+            color: #64748b !important;
+            text-decoration: line-through;
+        }
+        .program-time-block.program-past p {
+            color: #94a3b8 !important;
+        }
+        .program-time-block.program-live p.font-mono {
+            color: #0891b2 !important;
+        }
+        .program-slot.program-live {
+            border-color: #06b6d4 !important;
+            animation: program-live-pulse 2.5s ease-in-out infinite;
+        }
+        .program-slot.program-live .accordion-toggle {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.08), rgba(30, 58, 138, 0.06));
+        }
+        @keyframes program-live-pulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.35), 0 0 20px rgba(6, 182, 212, 0.15); }
+            50% { box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.55), 0 0 28px rgba(6, 182, 212, 0.3); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .program-slot.program-live {
+                animation: none;
+                box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.45), 0 0 20px rgba(6, 182, 212, 0.2);
+            }
+        }
+    </style>
+</head>
+<body class="bg-brand-light text-slate-800 font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all duration-300 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-globe text-brand-primary text-2xl"></i>
+                    <span class="font-bold text-xl text-brand-dark tracking-tight">Global Meeting <span class="text-brand-accent">2026</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#concept" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">コンセプト</a>
+                    <a href="#strategy" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">戦略</a>
+                    <a href="#program" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">プログラム</a>
+                    <a href="#venue" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">会場案内</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="concept" class="relative bg-hero-pattern bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center pt-16 scroll-mt-16">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-dark/90"></div>
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 fade-in-up">
+                <span class="text-brand-accent font-semibold tracking-wider text-sm uppercase">Annual Global Conference</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6 tracking-tight fade-in-up delay-100">
+                CR Challenge 27
+                <span class="block text-2xl md:text-4xl lg:text-5xl font-bold text-slate-300 mt-4 leading-snug">
+                    - 1年共有してみえてきた戦略 -
+                </span>
+            </h1>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 mt-12 fade-in-up delay-200 text-white/90">
+                <div class="flex items-center gap-3 bg-white/5 backdrop-blur-sm px-6 py-4 rounded-xl border border-white/10">
+                    <i class="fa-regular fa-calendar text-brand-accent text-2xl"></i>
+                    <div class="text-left">
+                        <p class="text-xs text-slate-400 uppercase tracking-wider">Date</p>
+                        <p class="font-bold text-lg">2026年6月5日 (金)</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-white/5 backdrop-blur-sm px-6 py-4 rounded-xl border border-white/10">
+                    <i class="fa-solid fa-location-dot text-brand-accent text-2xl"></i>
+                    <div class="text-left">
+                        <p class="text-xs text-slate-400 uppercase tracking-wider">Venue</p>
+                        <p class="font-bold text-lg">オークラアクトシティホテル浜松</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-16 fade-in-up delay-300">
+                <a href="#program" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-brand-primary hover:bg-blue-800 rounded-full transition-all duration-300 shadow-lg hover:shadow-brand-primary/50 gap-2 group">
+                    プログラムを見る
+                    <i class="fa-solid fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Section -->
+    <section id="strategy" class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-light opacity-50 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-cyan-50 opacity-50 blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">Core Strategies</h2>
+                <div class="w-16 h-1 bg-brand-accent mx-auto rounded-full"></div>
+                <p class="mt-6 text-lg text-slate-600 max-w-2xl mx-auto">
+                    Challenge27に向けて、国内と海外それぞれの役割を再定義し、次なる成長への布石を打ちます。
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                <!-- 国内戦略カード -->
+                <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-8 md:p-10 border border-slate-100 hover:-translate-y-2 transition-transform duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-brand-primary transition-colors duration-300">
+                        <i class="fa-solid fa-robot text-2xl text-brand-primary group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-brand-dark mb-4 border-b pb-4">国内戦略</h3>
+                    <p class="text-xl font-medium text-brand-primary leading-relaxed mb-6">
+                        「稼働率重視からの脱却と高度IT/DX/AI化、武器工場化」
+                    </p>
+                </div>
+
+                <!-- 海外戦略カード -->
+                <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-8 md:p-10 border border-slate-100 hover:-translate-y-2 transition-transform duration-300 group">
+                    <div class="w-14 h-14 rounded-xl bg-cyan-50 flex items-center justify-center mb-6 group-hover:bg-brand-accent transition-colors duration-300">
+                        <i class="fa-solid fa-earth-americas text-2xl text-brand-accent group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-brand-dark mb-4 border-b pb-4">海外戦略</h3>
+                    <p class="text-xl font-medium text-cyan-600 leading-relaxed mb-6">
+                        「未来を創る超投資拠点、地盤を固め直す進化拠点。」
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Section -->
+    <section id="program" class="py-24 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">Program Schedule</h2>
+                <div class="w-16 h-1 bg-brand-accent mx-auto rounded-full mb-6"></div>
+                <p class="text-slate-600 mb-2">進行状況により、時間が前後する場合がございます。</p>
+                <p class="text-sm text-brand-primary font-medium"><i class="fa-regular fa-hand-pointer mr-1"></i> 各プログラムはクリックで詳細が開けます。終了した枠はグレー表示、進行中の枠は光って表示されます。</p>
+                <p id="program-now-indicator" class="text-xs text-slate-500 mt-3 font-mono"></p>
+            </div>
+
+            <!-- タイムラインコンテナ -->
+            <div class="relative timeline-line">
+                
+                <!-- ■ 午前の部 ヘッダー -->
+                <div class="relative z-10 flex justify-center mb-12">
+                    <span class="bg-brand-primary text-white px-6 py-2 rounded-full font-bold shadow-md tracking-wider">
+                        <i class="fa-regular fa-sun mr-2 text-yellow-300"></i>午前の部
+                    </span>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Item 1 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">09:00 - 09:10</p>
+                                <p class="text-sm text-slate-500">10 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-plug text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">機材接続確認</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>柏木</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="2" placeholder="気づきやメモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">09:10 - 10:00</p>
+                                <p class="text-sm text-slate-500">50 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-mug-hot text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">※自由にご使用いただけます</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-400 px-3 py-1 rounded-full whitespace-nowrap">担当なし</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="text-slate-600 text-sm space-y-2 mb-4 mt-2">
+                                    <p>プロジェクト等で、自由にお集まりいただきご活用ください。</p>
+                                    <ul class="list-disc list-inside ml-2">
+                                        <li>テーマ：顧客、クレステック、サービスを共有する</li>
+                                        <li>ＣＲＧＲのサービスの共有、自社で生かす</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-lg">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="2" placeholder="打ち合わせ内容などを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">10:00 - 11:30</p>
+                                <p class="text-sm text-slate-500">90 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-users text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">マーサ</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>甚野</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="2" placeholder="気づきやメモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lunch -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-4">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                            <div class="text-right text-slate-400">
+                                <p class="text-xl font-mono">11:30 - 13:00</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-inner z-10">
+                                <i class="fa-solid fa-utensils text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                            <div class="border-t border-b border-slate-200 py-3 text-center text-slate-500 font-medium tracking-widest bg-slate-100/50 rounded-lg">
+                                昼休憩
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ■ 2026グローバルミーティング ヘッダー -->
+                <div class="relative z-10 py-4 mt-12">
+                    <div class="ml-12 md:ml-0 w-full">
+                        <div class="bg-gradient-to-r from-brand-primary to-brand-accent rounded-xl shadow-md">
+                            <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 p-5 md:py-6 md:pl-4 md:pr-6">
+                                <div class="md:w-[40%] lg:w-[38%] flex md:justify-end md:pr-8 shrink-0">
+                                    <div class="w-14 h-14 rounded-full bg-white/15 border-4 border-white/30 flex items-center justify-center shadow-md">
+                                        <i class="fa-solid fa-globe text-white text-xl"></i>
+                                    </div>
+                                </div>
+                                <div class="md:flex-1 text-white min-w-0">
+                                    <h3 class="text-xl md:text-2xl font-bold">2026グローバルミーティング</h3>
+                                    <p class="text-sm font-normal text-white/90 mt-2.5 flex items-center gap-2.5 flex-wrap">
+                                        <span data-start-time="13:00" class="start-clock-inline-slot start-clock--on-dark w-9 h-9 md:w-10 md:h-10 border-2 border-white/40"></span>
+                                        <span><i class="fa-regular fa-clock mr-1.5"></i>13:00 〜 17:20（約4時間20分）</span>
+                                    </p>
+                                    <p class="text-sm font-normal text-white/90 mt-1.5"><i class="fa-solid fa-location-dot mr-1.5"></i><span class="font-semibold">場所：</span>オークラアクトシティホテル浜松・４Ｆ「平安Ⅰ」</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Afternoon Items -->
+                <div class="space-y-6">
+                    <!-- 13:00 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">13:00 - 13:05</p>
+                                <p class="text-sm text-slate-500">5 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-flag text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">開会宣言、プログラム案内、初参加者紹介</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>柏木</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 13:05 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">13:05 - 13:15</p>
+                                <p class="text-sm text-slate-500">10 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-microphone text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">開催の挨拶</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>栗沢</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第1部 ヘッダー -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-2">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                            <!-- タイムライン接続用の見えない要素 -->
+                        </div>
+                        <div class="md:w-2/3 w-full ml-12 md:ml-0 z-20">
+                            <div class="bg-[#ffffcc] border-l-4 border-yellow-400 py-3 px-5 font-bold text-slate-800 rounded shadow-sm text-center md:text-left">
+                                ＜第1部＞ 42期事業部報告（売上・利益推移:42期着地レビュー＋43期予算）
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 13:15 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">13:15 - 13:40</p>
+                                <p class="text-sm text-slate-500">25 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-chart-line text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">全体：売上・利益推移とChallenge27 -1年共有してみえてきた戦略-</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>栗沢</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 休憩 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-2">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                            <div class="text-right text-slate-400">
+                                <p class="text-xl font-mono">13:40 - 13:50</p>
+                                <p class="text-sm">10 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-inner z-10">
+                                <i class="fa-solid fa-mug-hot text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                            <div class="border-t border-b border-slate-200 py-2 text-center text-slate-500 font-medium tracking-widest bg-slate-100/50 rounded-lg">
+                                休憩
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 13:50 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">13:50 - 14:15</p>
+                                <p class="text-sm text-slate-500">25 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-building text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">国内：売上・利益推移(42期着地レビュー＋43期予算)と報告</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>冨永</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 14:15 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">14:15 - 14:40</p>
+                                <p class="text-sm text-slate-500">25 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-globe text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">海外：売上・利益推移(42期着地レビュー＋43期予算)と報告</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>塚本</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 休憩 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-2">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                            <div class="text-right text-slate-400">
+                                <p class="text-xl font-mono">14:40 - 14:55</p>
+                                <p class="text-sm">15 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-inner z-10">
+                                <i class="fa-solid fa-mug-hot text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                            <div class="border-t border-b border-slate-200 py-2 text-center text-slate-500 font-medium tracking-widest bg-slate-100/50 rounded-lg">
+                                休憩
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第2部 ヘッダー -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-2">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                            <!-- タイムライン接続用の見えない要素 -->
+                        </div>
+                        <div class="md:w-2/3 w-full ml-12 md:ml-0 z-20">
+                            <div class="bg-[#ffffcc] border-l-4 border-yellow-400 py-3 px-5 font-bold text-slate-800 rounded shadow-sm text-center md:text-left">
+                                ＜第2部＞ 個別報告
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 14:55 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">14:55 - 15:05</p>
+                                <p class="text-sm text-slate-500">10 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-box text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">梱包設計推進紹介</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>田島・古屋</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 15:05 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">15:05 - 15:20</p>
+                                <p class="text-sm text-slate-500">15 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-robot text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">ManuAIbot</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>唐木</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 15:20 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">15:20 - 15:35</p>
+                                <p class="text-sm text-slate-500">15 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-laptop-code text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">Ai-RU</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>内田</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 15:35 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">15:35 - 15:50</p>
+                                <p class="text-sm text-slate-500">15 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-map-pin text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">ハノイ</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>松井</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 15:50 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">15:50 - 16:05</p>
+                                <p class="text-sm text-slate-500">15 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-map-pin text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">インドネシア</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>越田</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 休憩 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-2">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                            <div class="text-right text-slate-400">
+                                <p class="text-xl font-mono">16:05 - 16:15</p>
+                                <p class="text-sm">10 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-inner z-10">
+                                <i class="fa-solid fa-mug-hot text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                            <div class="border-t border-b border-slate-200 py-2 text-center text-slate-500 font-medium tracking-widest bg-slate-100/50 rounded-lg">
+                                休憩
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 16:15 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">16:15 - 16:30</p>
+                                <p class="text-sm text-slate-500">15 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-sitemap text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">管理系部門の方針（サスティナビリティ推進）</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>瀬戸</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 16:30 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">16:30 - 16:45</p>
+                                <p class="text-sm text-slate-500">15 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-sitemap text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">管理系部門の方針（品証）</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>舘山</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 16:45 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">16:45 - 17:15</p>
+                                <p class="text-sm text-slate-500">30 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-sitemap text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">管理系部門の方針（人事総務）</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>宮本</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 17:15 閉会 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                            <div class="text-right">
+                                <p class="text-xl font-bold text-brand-dark font-mono">17:15 - 17:20</p>
+                                <p class="text-sm text-slate-500">5 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-white border-4 border-slate-200 flex items-center justify-center shadow-sm z-10">
+                                <i class="fa-solid fa-flag-checkered text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="program-item md:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 w-full ml-12 md:ml-0 transition-all duration-300">
+                            <div class="flex items-center p-5 cursor-pointer accordion-toggle hover:bg-slate-50 rounded-xl transition-colors">
+                                <div class="flex-grow flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <h3 class="program-title text-lg font-bold text-slate-800 transition-colors">閉会</h3>
+                                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full whitespace-nowrap"><i class="fa-solid fa-user mr-1 text-slate-400"></i>柏木</span>
+                                </div>
+                                <div class="ml-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down transition-transform duration-300 accordion-icon"></i>
+                                </div>
+                            </div>
+                            <div class="accordion-content hidden px-5 pb-5 pt-2 border-t border-slate-100">
+                                <div class="bg-slate-50 p-4 rounded-lg mt-2">
+                                    <label class="block text-sm font-bold text-brand-primary mb-2"><i class="fa-regular fa-comment-dots mr-1"></i> メモ / コメント</label>
+                                    <textarea class="program-comment w-full border-slate-200 rounded-md p-2 text-sm focus:border-brand-primary focus:ring-1 focus:ring-brand-primary outline-none resize-y" rows="3" placeholder="メモを入力できます..."></textarea>
+                                    <div class="flex items-center mt-2">
+                                        <button class="save-comment-btn px-4 py-1.5 bg-brand-dark text-white text-sm font-medium rounded hover:bg-slate-700 transition-colors">保存</button>
+                                        <span class="save-status ml-3 text-xs font-bold text-green-600 hidden"><i class="fa-solid fa-check mr-1"></i>保存しました</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 移動、準備 -->
+                    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-2">
+                        <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                            <div class="text-right text-slate-400">
+                                <p class="text-xl font-mono">17:20 - 18:00</p>
+                                <p class="text-sm">40 min</p>
+                            </div>
+                            <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-inner z-10">
+                                <i class="fa-solid fa-shoe-prints text-slate-400"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                            <div class="border-t border-b border-slate-200 py-3 text-center text-slate-500 font-medium bg-slate-100/50 rounded-lg">
+                                移動、準備
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 懇親会 -->
+                    <div class="relative z-10 py-4">
+                        <div class="ml-12 md:ml-0 w-full">
+                            <div class="bg-gradient-to-r from-brand-primary to-brand-accent rounded-xl shadow-md">
+                                <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 p-5 md:py-6 md:pl-4 md:pr-6">
+                                    <div class="md:w-[40%] lg:w-[38%] flex md:justify-end md:pr-8 shrink-0">
+                                        <div class="w-14 h-14 rounded-full bg-white/15 border-4 border-white/30 flex items-center justify-center shadow-md">
+                                            <i class="fa-solid fa-champagne-glasses text-white text-xl"></i>
+                                        </div>
+                                    </div>
+                                    <div class="md:flex-1 text-white min-w-0">
+                                        <h3 class="text-xl md:text-2xl font-bold">懇親会</h3>
+                                        <p class="text-lg md:text-xl font-mono font-semibold text-white mt-2.5 flex items-center gap-2.5 flex-wrap">
+                                            <span data-start-time="18:00" class="start-clock-inline-slot start-clock--on-dark w-9 h-9 md:w-10 md:h-10 border-2 border-white/40"></span>
+                                            <span><i class="fa-regular fa-clock mr-1.5 text-base md:text-lg"></i>18:00 〜 20:00<span class="text-base md:text-lg font-sans font-normal text-white/90">（約2時間）</span></span>
+                                        </p>
+                                        <p class="text-sm md:text-base font-normal text-white/90 mt-1.5"><i class="fa-solid fa-location-dot mr-1.5"></i><span class="font-semibold">会場：</span>オークラアクトシティホテル浜松　30Fパール</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 懇親会プログラム -->
+                    <div class="space-y-6 mt-2">
+                        <!-- 18:00 開会宣言 -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">18:00 - 18:05</p>
+                                    <p class="text-sm text-slate-500">5 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-cyan-50 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-microphone text-brand-accent"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="bg-white rounded-xl shadow-sm border border-cyan-100 p-5">
+                                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-2">
+                                        <h3 class="text-lg font-bold text-slate-800">開会宣言、プログラム案内</h3>
+                                        <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full shrink-0"><i class="fa-solid fa-user mr-1 text-slate-400"></i>司会進行：越田社長</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 18:05 乾杯 -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">18:05 - 18:10</p>
+                                    <p class="text-sm text-slate-500">5 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-cyan-50 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-champagne-glasses text-brand-accent"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="bg-white rounded-xl shadow-sm border border-cyan-100 p-5">
+                                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                        <h3 class="text-lg font-bold text-slate-800">乾杯</h3>
+                                        <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full shrink-0"><i class="fa-solid fa-user mr-1 text-slate-400"></i>松井社長</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 18:10 歓談 -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-1">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">18:10 - 18:40</p>
+                                    <p class="text-sm text-slate-500">30 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-comments text-slate-400"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="border border-slate-200 py-3 px-5 text-center text-slate-600 font-medium bg-slate-50 rounded-xl italic">
+                                    ～歓談～
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 18:40 AWARD前半 -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">18:40 - 19:00</p>
+                                    <p class="text-sm text-slate-500">20 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-amber-50 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-trophy text-amber-500"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="bg-white rounded-xl shadow-sm border border-amber-100 p-5">
+                                    <h3 class="text-lg font-bold text-slate-800 mb-3">2025年CRESTEC AWARD（前半）<br class="md:hidden"><span class="text-base font-medium text-slate-600">特別賞発表 / トロフィー授与</span></h3>
+                                    <div class="text-sm text-slate-600 space-y-1">
+                                        <p><i class="fa-solid fa-user mr-1 text-slate-400"></i>アワード司会（前半・後半）：山崎所長</p>
+                                        <p><i class="fa-solid fa-award mr-1 text-amber-500"></i>トロフィー授与：栗沢社長</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 19:00 歓談 -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-1">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">19:00 - 19:30</p>
+                                    <p class="text-sm text-slate-500">30 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-comments text-slate-400"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="border border-slate-200 py-3 px-5 text-center text-slate-600 font-medium bg-slate-50 rounded-xl italic">
+                                    ～歓談～
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 19:30 AWARD後半 -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">19:30 - 19:45</p>
+                                    <p class="text-sm text-slate-500">15 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-amber-50 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-trophy text-amber-500"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="bg-white rounded-xl shadow-sm border border-amber-100 p-5">
+                                    <h3 class="text-lg font-bold text-slate-800 mb-3">2025年CRESTEC AWARD（後半）<br class="md:hidden"><span class="text-base font-medium text-slate-600">ベストアワード、社長賞発表 / トロフィー授与</span></h3>
+                                    <div class="text-sm text-slate-600 space-y-1">
+                                        <p><i class="fa-solid fa-award mr-1 text-amber-500"></i>トロフィー授与：（国内）冨永取締役、（海外）塚本執行役員、（社長賞）栗沢社長</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 19:45 中締め -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-stretch gap-6">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0 pt-4 md:pt-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">19:45 - 19:50</p>
+                                    <p class="text-sm text-slate-500">5 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-cyan-50 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-handshake text-brand-accent"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="bg-white rounded-xl shadow-sm border border-cyan-100 p-5">
+                                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                        <h3 class="text-lg font-bold text-slate-800">中締め</h3>
+                                        <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full shrink-0"><i class="fa-solid fa-user mr-1 text-slate-400"></i>道白社長</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 19:50 歓談（自由退室） -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-1">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">19:50 - 20:00</p>
+                                    <p class="text-sm text-slate-500">10 min</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-slate-100 border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-comments text-slate-400"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="border border-slate-200 py-3 px-5 text-center text-slate-600 font-medium bg-slate-50 rounded-xl italic">
+                                    ～歓談（自由退室）～
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 20:00 全員退室 -->
+                        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6 py-1">
+                            <div class="md:w-1/3 flex md:justify-end items-center gap-4 md:gap-6 pl-12 md:pl-0">
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-brand-dark font-mono">20:00</p>
+                                </div>
+                                <div class="absolute left-0 md:relative md:left-auto w-12 h-12 rounded-full bg-brand-primary border-4 border-white flex items-center justify-center shadow-sm z-10">
+                                    <i class="fa-solid fa-door-open text-white"></i>
+                                </div>
+                            </div>
+                            <div class="md:w-2/3 w-full ml-12 md:ml-0">
+                                <div class="bg-brand-dark text-white py-3 px-5 text-center font-bold rounded-xl">
+                                    全員退室
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Venue Section -->
+    <section id="venue" class="py-24 bg-brand-dark text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Venue Info</h2>
+                    <div class="w-16 h-1 bg-brand-accent rounded-full mb-8"></div>
+                    
+                    <h3 class="text-2xl font-bold mb-6 text-white/90">オークラアクトシティホテル浜松</h3>
+                    
+                    <div class="space-y-6 text-slate-300">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-map-location-dot text-brand-accent"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white mb-1">所在地</p>
+                                <p>〒430-7733<br>静岡県浜松市中区板屋町111-2</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-train text-brand-accent"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-white mb-1">アクセス</p>
+                                <p>JR浜松駅直結（徒歩約3分）<br>新幹線改札より動く歩道で直結</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-6">
+                            <a href="https://www.act-okura.co.jp/" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg transition-colors font-medium">
+                                ホテル公式サイトを見る <i class="fa-solid fa-external-link-alt text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 画像指定URLに変更 -->
+                <div class="relative h-96 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 group bg-slate-800">
+                    <img src="https://d3g2yh83to8qa2.cloudfront.net/wp-content/uploads/sites/35/2020/05/25010746/%E3%82%BF%E3%83%AF%E3%83%BC%E5%A4%96%E8%A6%B3-990x590.jpg" alt="オークラアクトシティホテル浜松 外観" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-brand-dark/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-white/10 py-8 text-center text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2026 Crestec Inc. Global Meeting All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- インタラクション用スクリプト -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // スムーススクロール
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 開始時刻の時計アイコン（プログラム時間帯内で針をアニメーション）
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const motionScale = prefersReducedMotion ? 2.5 : 1;
+
+            function toMinutes(time) {
+                return time.hour * 60 + time.minute;
+            }
+
+            function handDegrees(time) {
+                return {
+                    hour: (time.hour % 12) * 30 + time.minute * 0.5,
+                    minute: time.minute * 6
+                };
+            }
+
+            function parseTimeRange(text) {
+                const normalized = text.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+                const rangeMatch = normalized.match(/(\d{1,2}):(\d{2})\s*(?:-|〜|–|—)\s*(\d{1,2}):(\d{2})/);
+                if (rangeMatch) {
+                    return {
+                        start: { hour: parseInt(rangeMatch[1], 10), minute: parseInt(rangeMatch[2], 10) },
+                        end: { hour: parseInt(rangeMatch[3], 10), minute: parseInt(rangeMatch[4], 10) }
+                    };
+                }
+                const singleMatch = normalized.match(/(\d{1,2}):(\d{2})/);
+                if (singleMatch) {
+                    return {
+                        start: { hour: parseInt(singleMatch[1], 10), minute: parseInt(singleMatch[2], 10) },
+                        end: null
+                    };
+                }
+                return null;
+            }
+
+            function getAnimDurationMs(start, end) {
+                const diff = toMinutes(end) - toMinutes(start);
+                if (diff <= 0) return 0;
+                return Math.min(Math.max(diff * 120, 5000), 28000);
+            }
+
+            function setHandRotation(hand, degrees) {
+                hand.style.transform = `rotate(${degrees}deg)`;
+            }
+
+            /** 終了角度を、開始角度から常に時計回りになるよう調整 */
+            function clockwiseEndDeg(startDeg, endDeg) {
+                let delta = endDeg - startDeg;
+                if (delta <= 0) delta += 360;
+                if (delta === 0) delta = 360;
+                return startDeg + delta;
+            }
+
+            /** 開始→終了（時計回り）→開始へ戻る（時計回りで1周）のキーフレーム */
+            function buildClockwiseLoopKeyframes(startDeg, endDegCW) {
+                const forward = endDegCW - startDeg;
+                if (forward >= 360) {
+                    return [
+                        { transform: `rotate(${startDeg}deg)`, offset: 0 },
+                        { transform: `rotate(${startDeg + 360}deg)`, offset: 1 }
+                    ];
+                }
+                const forwardOffset = Math.max(forward / 360, 0.001);
+                return [
+                    { transform: `rotate(${startDeg}deg)`, offset: 0 },
+                    { transform: `rotate(${endDegCW}deg)`, offset: forwardOffset },
+                    { transform: `rotate(${startDeg + 360}deg)`, offset: 1 }
+                ];
+            }
+
+            function applyHandAnimation(hourHand, minuteHand, start, end) {
+                const startDeg = handDegrees(start);
+                setHandRotation(hourHand, startDeg.hour);
+                setHandRotation(minuteHand, startDeg.minute);
+
+                if (!end) return;
+
+                const durationMs = getAnimDurationMs(start, end);
+                if (durationMs <= 0) return;
+
+                const endDeg = handDegrees(end);
+                const minuteEndCW = clockwiseEndDeg(startDeg.minute, endDeg.minute);
+                const animOptions = {
+                    duration: durationMs * motionScale,
+                    iterations: Infinity,
+                    direction: 'normal',
+                    easing: 'ease-in-out'
+                };
+
+                if (typeof minuteHand.animate === 'function') {
+                    hourHand.getAnimations().forEach(a => a.cancel());
+                    minuteHand.getAnimations().forEach(a => a.cancel());
+                    setHandRotation(hourHand, startDeg.hour);
+                    minuteHand.animate(
+                        buildClockwiseLoopKeyframes(startDeg.minute, minuteEndCW),
+                        animOptions
+                    );
+                }
+            }
+
+            function buildStartClock(range, options = {}) {
+                const { start, end } = range;
+                const wrap = document.createElement('div');
+                wrap.className = 'start-clock w-full h-full' + (options.accent ? ' start-clock--accent' : '') + (options.onDark ? ' start-clock--on-dark' : '');
+                const startLabel = `${String(start.hour).padStart(2, '0')}:${String(start.minute).padStart(2, '0')}`;
+                const endLabel = end ? `${String(end.hour).padStart(2, '0')}:${String(end.minute).padStart(2, '0')}` : null;
+                wrap.setAttribute('role', 'img');
+                wrap.setAttribute('aria-label', endLabel ? `${startLabel} から ${endLabel} まで` : `開始 ${startLabel}`);
+
+                const face = document.createElement('div');
+                face.className = 'start-clock__face';
+                face.innerHTML = '<span class="start-clock__hand start-clock__hand--hour"></span><span class="start-clock__hand start-clock__hand--minute"></span><span class="start-clock__center"></span>';
+
+                const hourHand = face.querySelector('.start-clock__hand--hour');
+                const minuteHand = face.querySelector('.start-clock__hand--minute');
+                applyHandAnimation(hourHand, minuteHand, start, end);
+
+                wrap.appendChild(face);
+                return wrap;
+            }
+
+            function mountInlineStartClock(slot, range, options = {}) {
+                if (!slot || slot.dataset.clockMounted === 'true') return;
+                slot.classList.add('start-clock-inline-slot', 'bg-white', 'shadow-sm');
+                if (!slot.classList.contains('border-2')) {
+                    slot.classList.add('border-2', 'border-slate-200');
+                }
+                if (!slot.classList.contains('w-9')) {
+                    slot.classList.add('w-9', 'h-9', 'md:w-10', 'md:h-10');
+                }
+                slot.appendChild(buildStartClock(range, options));
+                slot.dataset.clockMounted = 'true';
+            }
+
+            document.querySelectorAll('[data-start-time]').forEach(slot => {
+                const parentText = slot.closest('p')?.textContent || slot.parentElement?.textContent || '';
+                let range = parseTimeRange(parentText);
+                if (!range) {
+                    const [h, m] = slot.dataset.startTime.split(':').map(Number);
+                    range = { start: { hour: h, minute: m }, end: null };
+                }
+                mountInlineStartClock(slot, range, { onDark: slot.classList.contains('start-clock--on-dark') });
+            });
+
+            document.querySelectorAll('.timeline-line .relative.z-10.flex').forEach(row => {
+                const col = row.querySelector('.md\\:w-1\\/3');
+                if (!col) return;
+                const timeBlock = col.querySelector('.text-right');
+                const timeEl = timeBlock?.querySelector('p.font-mono');
+                if (!timeBlock || !timeEl || timeBlock.dataset.clockMounted === 'true') return;
+                const range = parseTimeRange(timeEl.textContent);
+                if (!range) return;
+
+                const clockSlot = document.createElement('span');
+                mountInlineStartClock(clockSlot, range);
+
+                const group = document.createElement('div');
+                group.className = 'flex items-center gap-2 md:gap-3 justify-end';
+                col.insertBefore(group, timeBlock);
+                group.appendChild(clockSlot);
+                group.appendChild(timeBlock);
+                timeBlock.dataset.clockMounted = 'true';
+            });
+
+            // プログラムIDのプレフィックス（会議年などに合わせて変更可能）
+            const storagePrefix = 'gm2026_';
+
+            // アコーディオンの開閉処理
+            document.querySelectorAll('.accordion-toggle').forEach(toggleBtn => {
+                toggleBtn.addEventListener('click', (e) => {
+                    const item = e.currentTarget.closest('.program-item');
+                    const content = item.querySelector('.accordion-content');
+                    const icon = item.querySelector('.accordion-icon');
+                    
+                    content.classList.toggle('hidden');
+                    if(content.classList.contains('hidden')) {
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+
+            // コメントの保存機能（ローカルストレージ）
+            document.querySelectorAll('.program-item').forEach((item, index) => {
+                const textarea = item.querySelector('.program-comment');
+                if(!textarea) return;
+
+                const saveBtn = item.querySelector('.save-comment-btn');
+                const statusMsg = item.querySelector('.save-status');
+                const storageKey = storagePrefix + 'comment_' + index;
+
+                const savedComment = localStorage.getItem(storageKey);
+                if(savedComment) {
+                    textarea.value = savedComment;
+                }
+
+                saveBtn.addEventListener('click', () => {
+                    localStorage.setItem(storageKey, textarea.value);
+                    statusMsg.classList.remove('hidden');
+                    setTimeout(() => {
+                        statusMsg.classList.add('hidden');
+                    }, 2000);
+                });
+            });
+
+            // 当日の時刻で進行状況を表示（日付は見ない・PCの現在時刻と比較）
+            const scheduleSlots = [];
+
+            function padTime(n) {
+                return String(n).padStart(2, '0');
+            }
+
+            function hmToMinutes(h, m) {
+                return h * 60 + m;
+            }
+
+            function getNowMinutes() {
+                const now = new Date();
+                return now.getHours() * 60 + now.getMinutes();
+            }
+
+            function bindScheduleSlots() {
+                document.querySelectorAll('.timeline-line .relative.z-10.flex').forEach(row => {
+                    const col = row.querySelector('.md\\:w-1\\/3');
+                    const contentCol = row.querySelector('.md\\:w-2\\/3');
+                    const timeEl = col?.querySelector('p.font-mono');
+                    const slotEl = contentCol?.firstElementChild;
+                    if (!timeEl || !slotEl) return;
+
+                    const range = parseTimeRange(timeEl.textContent);
+                    if (!range) return;
+
+                    const endTime = range.end || {
+                        hour: range.start.hour,
+                        minute: Math.min(range.start.minute + 1, 59)
+                    };
+
+                    slotEl.classList.add('program-slot');
+                    const startMin = hmToMinutes(range.start.hour, range.start.minute);
+                    const endMin = hmToMinutes(endTime.hour, endTime.minute);
+                    if (endMin <= startMin) return;
+                    const timeBlock = timeEl.closest('.text-right');
+                    if (timeBlock) timeBlock.classList.add('program-time-block');
+
+                    scheduleSlots.push({
+                        el: slotEl,
+                        timeBlock,
+                        startMin,
+                        endMin,
+                        hasAccordion: !!slotEl.querySelector('.accordion-toggle')
+                    });
+                });
+            }
+
+            function formatNowClock() {
+                const now = new Date();
+                return `${padTime(now.getHours())}:${padTime(now.getMinutes())}`;
+            }
+
+            let lastLiveSlot = null;
+
+            function updateScheduleStatus() {
+                const nowMin = getNowMinutes();
+                let liveSlot = null;
+
+                scheduleSlots.forEach(({ el, timeBlock, startMin, endMin, hasAccordion }) => {
+                    el.classList.remove('program-past', 'program-live');
+                    timeBlock?.classList.remove('program-past', 'program-live');
+
+                    if (nowMin >= endMin) {
+                        el.classList.add('program-past');
+                        timeBlock?.classList.add('program-past');
+                    } else if (nowMin >= startMin && nowMin < endMin) {
+                        el.classList.add('program-live');
+                        timeBlock?.classList.add('program-live');
+                        liveSlot = el;
+                    }
+                });
+
+                if (liveSlot && liveSlot !== lastLiveSlot && liveSlot.querySelector('.accordion-toggle')) {
+                    const content = liveSlot.querySelector('.accordion-content');
+                    const icon = liveSlot.querySelector('.accordion-icon');
+                    if (content?.classList.contains('hidden')) {
+                        content.classList.remove('hidden');
+                        icon?.classList.add('rotate-180');
+                    }
+                }
+                lastLiveSlot = liveSlot;
+
+                const indicator = document.getElementById('program-now-indicator');
+                if (indicator) {
+                    indicator.textContent = `表示の基準時刻：${formatNowClock()}（日付は判定せず、時刻のみで進行表示）`;
+                }
+            }
+
+            bindScheduleSlots();
+            updateScheduleStatus();
+            setInterval(updateScheduleStatus, 30000);
+        });
+    </script>
+</body>
+</html>
