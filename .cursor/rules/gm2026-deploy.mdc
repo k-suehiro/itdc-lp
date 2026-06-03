@@ -1,0 +1,17 @@
+---
+description: gm2026.html 変更後は clasp と GitHub へ自動デプロイ
+globs: gm2026.html
+alwaysApply: false
+---
+
+# GM2026 デプロイ
+
+`gm2026.html` を編集したら、作業完了前に必ず次を実行する:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy-gm2026.ps1
+```
+
+このスクリプトは `gas/gm2026.html` へ同期 → `clasp push` → Git commit & GitHub push を行う。
+
+`gas/gm2026.html` を直接編集した場合も、ルートの `gm2026.html` と内容を揃えてから上記を実行する。

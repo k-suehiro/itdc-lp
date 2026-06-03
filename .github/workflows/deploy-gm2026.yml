@@ -1,0 +1,36 @@
+name: Deploy GM2026 to GAS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'gm2026.html'
+      - 'gas/**'
+
+jobs:
+  clasp-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install clasp
+        run: npm install -g @google/clasp
+
+      - name: Sync HTML to gas folder
+        run: cp gm2026.html gas/gm2026.html
+
+      - name: clasp push
+        env:
+          CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+        run: |
+          if [ -z "$CLASPRC_JSON" ]; then
+            echo "CLASPRC_JSON secret is not set. Skip clasp push in CI."
+            exit 0
+          fi
+          echo "$CLASPRC_JSON" > ~/.clasprc.json
+          cd gas && clasp push --force
