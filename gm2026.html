@@ -219,6 +219,28 @@
             border-radius: 9999px;
             background-color: #06b6d4;
         }
+
+        /* 案内図ライトボックス */
+        .venue-annai-zoom {
+            cursor: zoom-in;
+        }
+        .venue-annai-zoom:focus-visible {
+            outline: 2px solid #06b6d4;
+            outline-offset: 2px;
+        }
+        #venue-image-lightbox {
+            display: none;
+        }
+        #venue-image-lightbox.is-open {
+            display: flex;
+        }
+        #venue-image-lightbox .venue-lightbox-img {
+            max-width: min(96vw, 1200px);
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body class="bg-brand-light text-slate-800 font-sans antialiased">
@@ -1350,13 +1372,21 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
-                    <div class="rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 bg-slate-800">
+                    <button
+                        type="button"
+                        id="venue-annai-zoom"
+                        class="venue-annai-zoom group relative w-full rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 bg-slate-800 text-left"
+                        aria-label="案内図を拡大表示">
                         <img
                             src="https://www.act-okura.co.jp/media/hotel_annai.jpg"
                             alt="JR浜松駅メイワン改札口からホテルまでの案内図"
-                            class="block w-full h-auto"
+                            class="block w-full h-auto transition-transform duration-300 group-hover:scale-[1.02]"
                             loading="lazy">
-                    </div>
+                        <span class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 text-white text-xs font-medium backdrop-blur-sm opacity-90 group-hover:opacity-100 transition-opacity">
+                            <i class="fa-solid fa-magnifying-glass-plus"></i>
+                            クリックで拡大
+                        </span>
+                    </button>
 
                     <div class="space-y-5 text-slate-300 leading-relaxed">
                         <p class="text-base md:text-lg text-white/90">
@@ -1366,8 +1396,7 @@
                         <div class="rounded-xl bg-white/5 border border-white/10 p-5 space-y-3 text-sm md:text-base">
                             <p>※「メイワン改札口」の通行時間　6:00～21:15</p>
                             <p class="text-slate-400">
-                                ※但し、EX-ICカードをご利用のお客様で交通系ICカードをお持ちでない場合は<br class="hidden sm:inline">
-                                　「メイワン改札口」を通り抜けできませんので、1階「新幹線改札口」をご利用ください。
+                                ※但し、EX-ICカードをご利用のお客様で交通系ICカードをお持ちでない場合は「メイワン改札口」を通り抜けできませんので、1階「新幹線改札口」をご利用ください。
                             </p>
                         </div>
                     </div>
@@ -1375,6 +1404,28 @@
             </div>
         </div>
     </section>
+
+    <!-- 案内図ライトボックス -->
+    <div
+        id="venue-image-lightbox"
+        class="fixed inset-0 z-[100] items-center justify-center p-4 sm:p-8 bg-black/85 backdrop-blur-sm"
+        role="dialog"
+        aria-modal="true"
+        aria-label="案内図の拡大表示"
+        hidden>
+        <button
+            type="button"
+            id="venue-image-lightbox-close"
+            class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            aria-label="閉じる">
+            <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+        <img
+            id="venue-image-lightbox-img"
+            src="https://www.act-okura.co.jp/media/hotel_annai.jpg"
+            alt="JR浜松駅メイワン改札口からホテルまでの案内図"
+            class="venue-lightbox-img rounded-lg shadow-2xl">
+    </div>
 
     <!-- Footer -->
     <footer class="bg-slate-900 border-t border-white/10 py-8 text-center text-slate-400 text-sm">
@@ -1395,6 +1446,36 @@
                         target.scrollIntoView({ behavior: 'smooth' });
                     }
                 });
+            });
+
+            // 案内図: クリックで拡大
+            const annaiZoom = document.getElementById('venue-annai-zoom');
+            const annaiLightbox = document.getElementById('venue-image-lightbox');
+            const annaiLightboxClose = document.getElementById('venue-image-lightbox-close');
+
+            function openAnnaiLightbox() {
+                annaiLightbox.hidden = false;
+                annaiLightbox.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+                annaiLightboxClose.focus();
+            }
+
+            function closeAnnaiLightbox() {
+                annaiLightbox.hidden = true;
+                annaiLightbox.classList.remove('is-open');
+                document.body.style.overflow = '';
+                annaiZoom?.focus();
+            }
+
+            annaiZoom?.addEventListener('click', openAnnaiLightbox);
+            annaiLightboxClose?.addEventListener('click', closeAnnaiLightbox);
+            annaiLightbox?.addEventListener('click', (e) => {
+                if (e.target === annaiLightbox) closeAnnaiLightbox();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && annaiLightbox?.classList.contains('is-open')) {
+                    closeAnnaiLightbox();
+                }
             });
 
             // ヘッダーナビ: スクロール位置に応じてアクティブ表示
