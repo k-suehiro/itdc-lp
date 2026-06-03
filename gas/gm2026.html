@@ -191,6 +191,34 @@
                 box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.45), 0 0 20px rgba(6, 182, 212, 0.2);
             }
         }
+
+        /* ヘッダーナビ */
+        .nav-link {
+            position: relative;
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            color: #475569;
+            transition: color 0.2s ease, background-color 0.2s ease;
+        }
+        .nav-link:hover {
+            color: #1e3a8a;
+            background-color: rgba(30, 58, 138, 0.06);
+        }
+        .nav-link.is-active {
+            color: #1e3a8a;
+            font-weight: 700;
+            background-color: rgba(6, 182, 212, 0.12);
+        }
+        .nav-link.is-active::after {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            right: 0.75rem;
+            bottom: 0.15rem;
+            height: 2px;
+            border-radius: 9999px;
+            background-color: #06b6d4;
+        }
     </style>
 </head>
 <body class="bg-brand-light text-slate-800 font-sans antialiased">
@@ -200,16 +228,16 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex-shrink-0 flex items-center gap-2">
-                    <svg class="w-7 h-7 shrink-0" xmlns="http://www.w3.org/2000/svg" data-name="レイヤー_1" viewBox="0 0 57.41 57.41" aria-hidden="true" role="img">
+                    <svg class="w-7 h-7 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57.41 57.41" aria-hidden="true" role="img">
                         <path d="M43.44 4.12 10.97 36.59h.01c-2.71 2.7-2.71 7.1 0 9.81a6.96 6.96 0 0 0 9.83 0h-.01l32.47-32.46.03-.03c2.61 4.32 4.11 9.39 4.11 14.79 0 15.83-12.88 28.71-28.71 28.71S0 44.53 0 28.71 12.88 0 28.71 0c5.4 0 10.45 1.5 14.77 4.1l-.03.02Z" style="fill:#5e83c2"/>
                     </svg>
                     <span class="font-bold text-xl text-brand-dark tracking-tight">Global Meeting <span class="text-brand-accent">2026</span></span>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#concept" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">コンセプト</a>
-                    <a href="#strategy" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">戦略</a>
-                    <a href="#program" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">プログラム</a>
-                    <a href="#venue" class="text-sm font-medium text-slate-600 hover:text-brand-primary transition-colors">会場案内</a>
+                <div class="hidden md:flex space-x-2">
+                    <a href="#concept" class="nav-link text-sm font-medium" data-section="concept">コンセプト</a>
+                    <a href="#strategy" class="nav-link text-sm font-medium" data-section="strategy">戦略</a>
+                    <a href="#program" class="nav-link text-sm font-medium" data-section="program">プログラム</a>
+                    <a href="#venue" class="nav-link text-sm font-medium" data-section="venue">会場案内</a>
                 </div>
             </div>
         </div>
@@ -256,7 +284,7 @@
     </section>
 
     <!-- Strategy Section -->
-    <section id="strategy" class="py-24 bg-white relative overflow-hidden">
+    <section id="strategy" class="py-24 bg-white relative overflow-hidden scroll-mt-16">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-light opacity-50 blur-3xl pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-cyan-50 opacity-50 blur-3xl pointer-events-none"></div>
 
@@ -296,7 +324,7 @@
     </section>
 
     <!-- Program Section -->
-    <section id="program" class="py-24 bg-slate-50 border-t border-slate-200">
+    <section id="program" class="py-24 bg-slate-50 border-t border-slate-200 scroll-mt-16">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">Program Schedule</h2>
@@ -1250,7 +1278,7 @@
     </section>
 
     <!-- Venue Section -->
-    <section id="venue" class="py-24 bg-brand-dark text-white relative">
+    <section id="venue" class="py-24 bg-brand-dark text-white relative scroll-mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
@@ -1317,6 +1345,32 @@
                     }
                 });
             });
+
+            // ヘッダーナビ: スクロール位置に応じてアクティブ表示
+            const navLinks = document.querySelectorAll('.nav-link[data-section]');
+            const navSections = ['concept', 'strategy', 'program', 'venue']
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
+
+            function updateActiveNavLink() {
+                const offset = window.innerHeight * 0.35;
+                let activeId = navSections[0]?.id || 'concept';
+
+                navSections.forEach(section => {
+                    const top = section.getBoundingClientRect().top;
+                    if (top <= offset) {
+                        activeId = section.id;
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.toggle('is-active', link.dataset.section === activeId);
+                });
+            }
+
+            updateActiveNavLink();
+            window.addEventListener('scroll', updateActiveNavLink, { passive: true });
+            window.addEventListener('resize', updateActiveNavLink);
 
             // 開始時刻の時計アイコン（プログラム時間帯内で針をアニメーション）
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
