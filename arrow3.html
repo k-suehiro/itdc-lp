@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI戦略および研究開発ガイドライン</title>
+    <!-- Tailwind CSSの読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Iconsの読み込み -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* アニメーション用のカスタムスタイル */
+        .tab-content { 
+            display: none; 
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeInSlideUp 0.5s ease-out forwards;
+        }
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900 font-sans p-4 md:p-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-2">
+                AI戦略および研究開発ガイドライン
+            </h1>
+            <p class="text-gray-500">次世代AIアーキテクチャへの移行と研究開発指針</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="flex overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200 mb-8 p-1 gap-1">
+            <button onclick="switchTab('company')" id="tab-btn-company" class="tab-btn flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm md:text-base font-semibold rounded-lg transition-all whitespace-nowrap bg-blue-600 text-white shadow-md">
+                <i data-lucide="target" class="w-5 h-5 text-white tab-icon"></i>
+                会社方針
+            </button>
+            <button onclick="switchTab('itdc')" id="tab-btn-itdc" class="tab-btn flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm md:text-base font-semibold rounded-lg transition-all whitespace-nowrap text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+                <i data-lucide="server" class="w-5 h-5 text-gray-400 tab-icon"></i>
+                ITDC部門方針
+            </button>
+            <button onclick="switchTab('guideline')" id="tab-btn-guideline" class="tab-btn flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm md:text-base font-semibold rounded-lg transition-all whitespace-nowrap text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+                <i data-lucide="lightbulb" class="w-5 h-5 text-gray-400 tab-icon"></i>
+                研究開発ガイドライン
+            </button>
+        </div>
+
+        <!-- Content Area -->
+        <main class="bg-white/50 backdrop-blur-sm rounded-3xl">
+            
+            <!-- 会社方針タブ -->
+            <div id="content-company" class="tab-content active space-y-8">
+                <div class="border-b border-gray-200 pb-5">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="target" class="text-blue-600 w-8 h-8"></i>
+                        【全社方針】AI戦略「三本の矢」
+                    </h2>
+                    <p class="mt-4 text-gray-600 leading-relaxed">
+                        我が社は、既存のレガシーなシステム環境や業務プロセスから脱却し、最新のAI技術とデータ活用を前提とした次世代型の組織へ進化します。この変革を推進するため、以下の「三本の矢」を同時に展開し、自社のDX化と新たなビジネスモデルの創出を目指します。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- 第一の矢 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-300"></div>
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="trending-up" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">第一の矢</h3>
+                        <h4 class="text-md font-semibold text-blue-600 mb-4">AIソリューションの外部販売<br><span class="text-sm font-normal text-gray-500">（市場のリード）</span></h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-blue-500 mt-0.5 shrink-0"></i>
+                                <span>自社で培ったAI技術やマニュアル評価、AIライティングサポートを製品化し、外部へ提供。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-blue-500 mt-0.5 shrink-0"></i>
+                                <span>制作・版下業界において他社の追随を許さない「AIリーディングカンパニー」としての地位を確立し、市場と株主に強くアピール。</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 第二の矢 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-300"></div>
+                        <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">第二の矢</h3>
+                        <h4 class="text-md font-semibold text-indigo-600 mb-4">内部制作プロセスの革新<br><span class="text-sm font-normal text-gray-500">（本業のアップデート）</span></h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>デザイン、ライティング、DTP、翻訳、印刷チェックなど、制作業務のコア領域にAIを実装。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>「爆速・高品質」という圧倒的な付加価値を生み出し、クライアントに還元できる体制を構築。</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 第三の矢 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-300"></div>
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">第三の矢</h3>
+                        <h4 class="text-md font-semibold text-emerald-600 mb-4">データドリブン経営と全社DX<br><span class="text-sm font-normal text-gray-500">（内部効率化）</span></h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <span>旧来のシステム環境から脱却し、社内のあらゆる知見・データをAIが学習・検索できる次世代データベースへ移行。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <span>経営、営業、管理部門を含めた全社において、データに基づく意思決定と高度な業務自動化を実現。</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ITDC部門方針タブ -->
+            <div id="content-itdc" class="tab-content space-y-8">
+                <div class="border-b border-gray-200 pb-5">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="server" class="text-indigo-600 w-8 h-8"></i>
+                        【ITDC部門方針】会社方針を実現するための「3つの技術戦略」
+                    </h2>
+                    <p class="mt-4 text-gray-600 leading-relaxed">
+                        ITDC部門は、全社のAI戦略を実現するための「技術的な中核（エンジン）」を担います。システム監査の要件や既存業務の安定稼働を守りつつ、現実的かつスピーディにAI化を進めるため、以下の3つの主軸で技術戦略を実行します。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- 戦略1 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 1</h3>
+                        <h4 class="text-md font-semibold text-indigo-600 mb-4">アーキテクチャの分離・連携<br><span class="text-sm font-normal text-gray-500">（監査対応とAI化の両立）</span></h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span><strong>バックエンド（SoR）:</strong> FileMakerは監査基準を満たす「堅牢なデータ保管庫」として残し、直接操作から切り離す。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span><strong>フロントエンド（SoI）:</strong> WebフロントおよびRAGを用いたAIチャットボットを新規開発。FileMakerから安全に同期するAPIを構築する。</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 戦略2 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="trending-up" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 2</h3>
+                        <h4 class="text-md font-semibold text-emerald-600 mb-4">アジャイルなプロトタイプ開発<br><span class="text-sm font-normal text-gray-500">（小さく生んで大きく育てる）</span></h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <span>いきなり巨大なシステムを作らず、「制作業務の特定フロー」や「社内規定検索」など、効果が見えやすい部分から開発を行う。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <span>内部向けシステムも将来的な「外部販売（第一の矢）」への転用を前提とし、汎用性やマルチテナント対応を意識した設計を行う。</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 戦略3 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="users" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 3</h3>
+                        <h4 class="text-md font-semibold text-orange-600 mb-4">非エンジニアチームとの協業<br><span class="text-sm font-normal text-gray-500">（業務理解と技術の融合）</span></h4>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-orange-500 mt-0.5 shrink-0"></i>
+                                <span>現場の業務フローの棚卸しやプロンプトの検証は、AI推進担当チーム（3名）と強力に連携して進める。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-orange-500 mt-0.5 shrink-0"></i>
+                                <span>ITDCは彼らが安全かつ自由にAIをテスト・検証できる「サンドボックス環境」を迅速に提供し、技術面からバックアップする。</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ガイドラインタブ -->
+            <div id="content-guideline" class="tab-content space-y-8">
+                <div class="border-b border-gray-200 pb-5">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="lightbulb" class="text-amber-500 w-8 h-8"></i>
+                        【部門内向け】今後の研究開発 申請ガイドライン
+                    </h2>
+                    <p class="mt-4 text-gray-600 leading-relaxed">
+                        今後、研究開発の決裁を申請する際は、以下の「3つの研究開発の主軸」のいずれかに貢献する技術検証であることを明確にしてください。会社方針（三本の矢）との連携を意識した申請は積極的に承認・支援します。
+                    </p>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-5 rounded-r-xl">
+                    <h3 class="font-bold text-amber-800 mb-2 flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                        申請書の書き方のポイント
+                    </h3>
+                    <p class="text-sm text-amber-900">
+                        申請理由に<strong>「本研究は会社方針の『第二の矢』の実現に向け、ITDC部門戦略の『主軸○』に該当する～」「監査要件をクリアしつつRAG化を進めるための～」</strong>といった文脈を必ず入れること。経営方針とのリンクを強調してください。
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="workflow" class="w-6 h-6 text-gray-600"></i>
+                        研究開発の3つの主軸と推奨テーマ
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        
+                        <!-- 主軸1 -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4">
+                                <i data-lucide="database" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">主軸 1: データ連携・基盤構築</h4>
+                            <p class="text-xs text-gray-500 mb-4">第三の矢・部門戦略1に対応</p>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
+                                    <p class="text-sm text-gray-700">FileMakerからWebフロント/RAG用データベースへの安全かつリアルタイムなデータ同期手法（API/バッチ処理）の検証。</p>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
+                                    <p class="text-sm text-gray-700">社内の非構造化データ（PDF、Word等）をRAGで高精度に検索するための、ベクトルデータベース構築とチャンク分割手法の最適化。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 主軸2 -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4">
+                                <i data-lucide="zap" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">主軸 2: 制作業務特化型AI</h4>
+                            <p class="text-xs text-gray-500 mb-4">第二の矢・部門戦略2に対応</p>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
+                                    <p class="text-sm text-gray-700">LLM APIを活用した、DTP・ライティング業務における初稿作成自動化ツールのプロトタイプ開発と、制作現場での試験運用。</p>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
+                                    <p class="text-sm text-gray-700">過去の制作物やデザインルールを学習させた、「デザインアイデア壁打ち・自動チェックAI」の実現可能性調査。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 主軸3 -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mb-4">
+                                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">主軸 3: セキュリティ・環境構築</h4>
+                            <p class="text-xs text-gray-500 mb-4">全社の基盤・部門戦略3に対応</p>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <span class="text-xs font-bold text-red-600 bg-red-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
+                                    <p class="text-sm text-gray-700">機密データを外部のAI学習に利用させないための、セキュアな社内ローカルLLM構築の技術検証およびコスト算出。</p>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <span class="text-xs font-bold text-red-600 bg-red-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
+                                    <p class="text-sm text-gray-700">Azure OpenAIやGCP Vertex AIを用いた、エンタープライズ向けセキュアAI環境の導入検証と、非エンジニアチーム用サンドボックスの構築。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JavaScript ロジック -->
+    <script>
+        // ページ読み込み時にアイコンを描画
+        lucide.createIcons();
+
+        // タブ切り替え関数
+        function switchTab(tabId) {
+            // 1. すべてのコンテンツを非表示にする
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // 2. 選択されたコンテンツを表示する
+            const activeContent = document.getElementById('content-' + tabId);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
+
+            // 3. すべてのタブボタンのスタイルを非アクティブ（グレー）にする
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.className = "tab-btn flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm md:text-base font-semibold rounded-lg transition-all whitespace-nowrap text-gray-500 hover:bg-gray-50 hover:text-gray-900";
+                
+                // アイコンの色をグレーにする
+                const icon = btn.querySelector('.tab-icon');
+                if(icon) {
+                    icon.classList.remove('text-white');
+                    icon.classList.add('text-gray-400');
+                }
+            });
+
+            // 4. 選択されたタブボタンのスタイルをアクティブ（青色）にする
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm md:text-base font-semibold rounded-lg transition-all whitespace-nowrap bg-blue-600 text-white shadow-md";
+                
+                // アイコンの色を白にする
+                const icon = activeBtn.querySelector('.tab-icon');
+                if(icon) {
+                    icon.classList.remove('text-gray-400');
+                    icon.classList.add('text-white');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
