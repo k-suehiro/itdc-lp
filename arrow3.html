@@ -140,59 +140,62 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- 戦略1 -->
+                    <!-- 戦略1：第一の矢 -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden">
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
-                            <i data-lucide="shield-check" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 1</h3>
-                        <h4 class="text-md font-semibold text-indigo-600 mb-4">アーキテクチャの分離・連携<br><span class="text-sm font-normal text-gray-500">（監査対応とAI化の両立）</span></h4>
-                        <ul class="space-y-3 text-sm text-gray-600">
-                            <li class="flex items-start gap-2">
-                                <i data-lucide="circle-check" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
-                                <span><strong>バックエンド（SoR）:</strong> FileMakerは監査基準を満たす「堅牢なデータ保管庫」として残し、直接操作から切り離す。</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i data-lucide="circle-check" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
-                                <span><strong>フロントエンド（SoI）:</strong> WebフロントおよびRAGを用いたAIチャットボットを新規開発。FileMakerから安全に同期するAPIを構築する。</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- 戦略2 -->
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden">
-                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4">
                             <i data-lucide="trending-up" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 2</h3>
-                        <h4 class="text-md font-semibold text-emerald-600 mb-4">アジャイルなプロトタイプ開発<br><span class="text-sm font-normal text-gray-500">（小さく生んで大きく育てる）</span></h4>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 1</h3>
+                        <h4 class="text-md font-semibold text-blue-600 mb-4">アジャイルなプロトタイプ開発<br><span class="text-sm font-normal text-gray-500">（小さく生んで大きく育てる）</span></h4>
+                        <p class="text-xs text-blue-600 font-medium mb-4">→ 会社方針「第一の矢」に対応</p>
                         <ul class="space-y-3 text-sm text-gray-600">
                             <li class="flex items-start gap-2">
-                                <i data-lucide="circle-check" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <i data-lucide="circle-check" class="w-4 h-4 text-blue-500 mt-0.5 shrink-0"></i>
                                 <span>いきなり巨大なシステムを作らず、「制作業務の特定フロー」や「社内規定検索」など、効果が見えやすい部分から開発を行う。</span>
                             </li>
                             <li class="flex items-start gap-2">
-                                <i data-lucide="circle-check" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <i data-lucide="circle-check" class="w-4 h-4 text-blue-500 mt-0.5 shrink-0"></i>
                                 <span>内部向けシステムも将来的な「外部販売（第一の矢）」への転用を前提とし、汎用性やマルチテナント対応を意識した設計を行う。</span>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- 戦略3 -->
+                    <!-- 戦略2：第二の矢 -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden">
-                        <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
                             <i data-lucide="users" class="w-6 h-6"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 3</h3>
-                        <h4 class="text-md font-semibold text-orange-600 mb-4">非エンジニアチームとの協業<br><span class="text-sm font-normal text-gray-500">（業務理解と技術の融合）</span></h4>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 2</h3>
+                        <h4 class="text-md font-semibold text-indigo-600 mb-4">非エンジニアチームとの協業<br><span class="text-sm font-normal text-gray-500">（業務理解と技術の融合）</span></h4>
+                        <p class="text-xs text-indigo-500 font-medium mb-4">→ 会社方針「第二の矢」に対応</p>
                         <ul class="space-y-3 text-sm text-gray-600">
                             <li class="flex items-start gap-2">
-                                <i data-lucide="circle-check" class="w-4 h-4 text-orange-500 mt-0.5 shrink-0"></i>
+                                <i data-lucide="circle-check" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
                                 <span>現場の業務フローの棚卸しやプロンプトの検証は、AI推進担当チーム（3名）と強力に連携して進める。</span>
                             </li>
                             <li class="flex items-start gap-2">
-                                <i data-lucide="circle-check" class="w-4 h-4 text-orange-500 mt-0.5 shrink-0"></i>
+                                <i data-lucide="circle-check" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i>
                                 <span>ITDCは彼らが安全かつ自由にAIをテスト・検証できる「サンドボックス環境」を迅速に提供し、技術面からバックアップする。</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 戦略3：第三の矢 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden">
+                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">戦略 3</h3>
+                        <h4 class="text-md font-semibold text-emerald-600 mb-4">アーキテクチャの分離・連携<br><span class="text-sm font-normal text-gray-500">（監査対応とAI化の両立）</span></h4>
+                        <p class="text-xs text-emerald-600 font-medium mb-4">→ 会社方針「第三の矢」に対応</p>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <span><strong>バックエンド（SoR）:</strong> FileMakerは監査基準を満たす「堅牢なデータ保管庫」として残し、直接操作から切り離す。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="circle-check" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></i>
+                                <span><strong>フロントエンド（SoI）:</strong> WebフロントおよびRAGを用いたAIチャットボットを新規開発。FileMakerから安全に同期するAPIを構築する。</span>
                             </li>
                         </ul>
                     </div>
@@ -228,59 +231,59 @@
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         
-                        <!-- 主軸1 -->
+                        <!-- 主軸1：第一の矢 -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4">
-                                <i data-lucide="database" class="w-6 h-6"></i>
+                                <i data-lucide="shield-check" class="w-6 h-6"></i>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-1">主軸 1: データ連携・基盤構築</h4>
-                            <p class="text-xs text-gray-500 mb-4">第三の矢・部門戦略1に対応</p>
+                            <h4 class="font-bold text-gray-800 mb-1">主軸 1: セキュリティ・環境構築</h4>
+                            <p class="text-xs text-gray-500 mb-4">第一の矢・部門戦略1に対応</p>
                             <div class="space-y-4">
                                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                     <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
-                                    <p class="text-sm text-gray-700">FileMakerからWebフロント/RAG用データベースへの安全かつリアルタイムなデータ同期手法（API/バッチ処理）の検証。</p>
+                                    <p class="text-sm text-gray-700">機密データを外部のAI学習に利用させないための、セキュアな社内ローカルLLM構築の技術検証およびコスト算出。</p>
                                 </div>
                                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
                                     <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
-                                    <p class="text-sm text-gray-700">社内の非構造化データ（PDF、Word等）をRAGで高精度に検索するための、ベクトルデータベース構築とチャンク分割手法の最適化。</p>
+                                    <p class="text-sm text-gray-700">Azure OpenAIやGCP Vertex AIを用いた、エンタープライズ向けセキュアAI環境の導入検証と、非エンジニアチーム用サンドボックスの構築。</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- 主軸2 -->
+                        <!-- 主軸2：第二の矢 -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4">
+                            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
                                 <i data-lucide="zap" class="w-6 h-6"></i>
                             </div>
                             <h4 class="font-bold text-gray-800 mb-1">主軸 2: 制作業務特化型AI</h4>
                             <p class="text-xs text-gray-500 mb-4">第二の矢・部門戦略2に対応</p>
                             <div class="space-y-4">
                                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                    <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
+                                    <span class="text-xs font-bold text-indigo-600 bg-indigo-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
                                     <p class="text-sm text-gray-700">LLM APIを活用した、DTP・ライティング業務における初稿作成自動化ツールのプロトタイプ開発と、制作現場での試験運用。</p>
                                 </div>
                                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                    <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
+                                    <span class="text-xs font-bold text-indigo-600 bg-indigo-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
                                     <p class="text-sm text-gray-700">過去の制作物やデザインルールを学習させた、「デザインアイデア壁打ち・自動チェックAI」の実現可能性調査。</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- 主軸3 -->
+                        <!-- 主軸3：第三の矢 -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mb-4">
-                                <i data-lucide="shield-check" class="w-6 h-6"></i>
+                            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
+                                <i data-lucide="database" class="w-6 h-6"></i>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-1">主軸 3: セキュリティ・環境構築</h4>
-                            <p class="text-xs text-gray-500 mb-4">全社の基盤・部門戦略3に対応</p>
+                            <h4 class="font-bold text-gray-800 mb-1">主軸 3: データ連携・基盤構築</h4>
+                            <p class="text-xs text-gray-500 mb-4">第三の矢・部門戦略3に対応</p>
                             <div class="space-y-4">
                                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                    <span class="text-xs font-bold text-red-600 bg-red-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
-                                    <p class="text-sm text-gray-700">機密データを外部のAI学習に利用させないための、セキュアな社内ローカルLLM構築の技術検証およびコスト算出。</p>
+                                    <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded mb-2 inline-block">申請案 A</span>
+                                    <p class="text-sm text-gray-700">FileMakerからWebフロント/RAG用データベースへの安全かつリアルタイムなデータ同期手法（API/バッチ処理）の検証。</p>
                                 </div>
                                 <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                    <span class="text-xs font-bold text-red-600 bg-red-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
-                                    <p class="text-sm text-gray-700">Azure OpenAIやGCP Vertex AIを用いた、エンタープライズ向けセキュアAI環境の導入検証と、非エンジニアチーム用サンドボックスの構築。</p>
+                                    <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded mb-2 inline-block">申請案 B</span>
+                                    <p class="text-sm text-gray-700">社内の非構造化データ（PDF、Word等）をRAGで高精度に検索するための、ベクトルデータベース構築とチャンク分割手法の最適化。</p>
                                 </div>
                             </div>
                         </div>
