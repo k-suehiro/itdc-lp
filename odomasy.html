@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>odomasy - 次世代ドキュメント統合管理システム</title>
+    <meta name="description" content="odomasy（オドマシー）は、執筆・翻訳・組版をクラウド上で統合する次世代ドキュメント統合管理システムです。XMLベースの構造化管理と高速な自動組版、翻訳支援機能により、大規模マニュアル制作を効率化します。">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="odomasy - 次世代ドキュメント統合管理システム">
+    <meta property="og:description" content="執筆・翻訳・組版をクラウドでシームレスに統合し、大規模ドキュメント制作を支える次世代ドキュメント統合管理システム。">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -184,8 +188,187 @@
         .feature-card:not(.expanded) .feature-card-gradient {
             opacity: 1;
         }
+
+        /* lp-corporate-links.css（LP共通：コーポレートサイト導線） */
+        .lp-corp-header-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1.4;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .lp-corp-header-link .lp-corp-ext-icon {
+            font-size: 0.65em;
+            opacity: 0.75;
+        }
+
+        .lp-corp-theme-dark .lp-corp-header-link {
+            color: rgba(156, 163, 175, 1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            padding: 0.4rem 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .lp-corp-theme-dark .lp-corp-header-link:hover {
+            color: rgb(34, 211, 238);
+            border-color: rgba(34, 211, 238, 0.4);
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        .lp-corp-theme-light .lp-corp-header-link {
+            color: #4b5563;
+            border: 1px solid rgba(0, 86, 179, 0.25);
+            border-radius: 9999px;
+            padding: 0.35rem 0.7rem;
+            background: transparent;
+        }
+
+        .lp-corp-theme-light .lp-corp-header-link:hover {
+            color: #0056b3;
+            border-color: #0056b3;
+            background: rgba(0, 86, 179, 0.05);
+        }
+
+        @media (max-width: 767px) {
+            .lp-corp-header-link {
+                font-size: 0.65rem;
+                padding: 0.3rem 0.55rem;
+                max-width: 9.5rem;
+                white-space: normal;
+                text-align: center;
+            }
+        }
+
+        .lp-corp-cta-sub {
+            margin-top: 1.25rem;
+        }
+
+        .lp-corp-cta-sub-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.875rem;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: color 0.2s;
+        }
+
+        .lp-corp-theme-dark .lp-corp-cta-sub-link {
+            color: #9ca3af;
+        }
+
+        .lp-corp-theme-dark .lp-corp-cta-sub-link:hover {
+            color: #22d3ee;
+        }
+
+        .lp-corp-theme-light .lp-corp-cta-sub-link {
+            color: #6b7280;
+        }
+
+        .lp-corp-theme-light .lp-corp-cta-sub-link:hover {
+            color: #0056b3;
+        }
+
+        .lp-corp-footer {
+            border-top: 1px solid rgba(128, 128, 128, 0.2);
+            padding: 2rem 0;
+            font-size: 0.875rem;
+            line-height: 1.7;
+        }
+
+        .lp-corp-theme-dark .lp-corp-footer {
+            background: #000;
+            color: #9ca3af;
+        }
+
+        .lp-corp-theme-light .lp-corp-footer {
+            background: #f8fafc;
+            color: #4b5563;
+            border-top-color: #e5e7eb;
+        }
+
+        .lp-corp-footer-inner {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+
+        .lp-corp-footer-note {
+            margin: 0 0 1.25rem;
+            font-size: 0.8125rem;
+            color: inherit;
+            opacity: 0.9;
+        }
+
+        .lp-corp-footer-operator {
+            margin: 0 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .lp-corp-theme-dark .lp-corp-footer-operator {
+            color: #d1d5db;
+        }
+
+        .lp-corp-theme-light .lp-corp-footer-operator {
+            color: #1f2937;
+        }
+
+        .lp-corp-footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem 1rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .lp-corp-footer-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .lp-corp-theme-dark .lp-corp-footer-links a {
+            color: #22d3ee;
+        }
+
+        .lp-corp-theme-dark .lp-corp-footer-links a:hover {
+            color: #67e8f9;
+        }
+
+        .lp-corp-theme-light .lp-corp-footer-links a {
+            color: #0056b3;
+        }
+
+        .lp-corp-theme-light .lp-corp-footer-links a:hover {
+            color: #004494;
+        }
+
+        .lp-corp-footer-sep {
+            opacity: 0.5;
+            user-select: none;
+        }
+
+        .lp-corp-footer-copy {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(128, 128, 128, 0.15);
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
     </style>
-    <link rel="stylesheet" href="css/lp-corporate-links.css">
 </head>
 <body class="antialiased">
 
@@ -197,6 +380,13 @@
             </a>
             <div class="flex items-center gap-3 md:gap-6">
                 <div data-lp-corp="header" data-lp-corp-theme="dark" class="shrink-0"></div>
+
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" type="button" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all backdrop-blur-sm" aria-label="メニューを開く" aria-controls="mobile-menu" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- Desktop nav -->
                 <div class="hidden md:flex items-center gap-8">
                     <a href="#features" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="features">機能</a>
                     <a href="#detailed-features" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="detailed-features">機能詳細</a>
@@ -207,6 +397,18 @@
                         お問い合わせ
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden border-t border-white/10 bg-brand-navy/95 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-2">
+                <a href="#features" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="features">機能</a>
+                <a href="#detailed-features" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="detailed-features">機能詳細</a>
+                <a href="#architecture" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="architecture">システム構成</a>
+                <a href="#languages" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="languages">対応言語</a>
+                <a href="#faq" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="faq">FAQ</a>
+                <a href="#contact" class="nav-link mt-2 inline-flex items-center justify-center px-6 py-3 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all" data-section="contact">お問い合わせ</a>
             </div>
         </div>
     </nav>
@@ -235,8 +437,8 @@
             </h1>
             
             <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
-                ドキュメント制作を<span class="text-cyan-400 font-bold">進化させる</span>。<br>
-                執筆・翻訳・組版を統合する、次世代クラウドプラットフォーム。
+                日本企業のドキュメント制作を<span class="text-cyan-400 font-bold">進化させる</span>。<br>
+                執筆・翻訳・組版・改訂管理まで。<br>ドキュメント制作業務を一元化する、次世代クラウドプラットフォーム
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center gap-6">
@@ -245,7 +447,7 @@
                     <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </a>
                 <a href="#contact" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white font-medium backdrop-blur-sm transition-all">
-                    デモを依頼
+                    無料デモを依頼
                 </a>
             </div>
         </div>
@@ -342,10 +544,15 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Feature 1 -->
                 <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal">
-                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-file-code text-white"></i>
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-code text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-bold text-white mb-1 leading-snug">構造エラーを未然に防ぐ</p>
+                            <h3 class="text-xs text-gray-400 font-mono tracking-wide">XML Syntax Analysis</h3>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 font-mono">XML Syntax Analysis</h3>
                     <p class="text-gray-400 text-sm leading-relaxed mb-4">
                         構造違反をリアルタイムに検知。編集内容は即座にプレビューへ反映され、迷いのない執筆体験を提供します。
                     </p>
@@ -353,21 +560,31 @@
 
                 <!-- Feature 2 -->
                 <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-100">
-                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-shield-halved text-white"></i>
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-shield-halved text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-bold text-white mb-1 leading-snug">表記ゆれ・記述ミスを見逃さない</p>
+                            <h3 class="text-xs text-gray-400 font-mono tracking-wide">Quality Assurance</h3>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 font-mono">Quality Assurance</h3>
                     <p class="text-gray-400 text-sm leading-relaxed mb-4">
-                        スペル、数値、記号重複などを自動チェック。人間の限界を超えた精度で、ドキュメントの品質を担保します。
+                        スペル、数値、記号重複などを自動チェック。人の目では見逃しやすい点も漏れなく検知し、ドキュメントの品質を保ちます。
                     </p>
                 </div>
 
                 <!-- Feature 3 -->
                 <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-200">
-                    <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-file-invoice text-white"></i>
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-invoice text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-bold text-white mb-1 leading-snug">変更箇所をひと目で把握</p>
+                            <h3 class="text-xs text-gray-400 font-mono tracking-wide">Diff Comparison</h3>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 font-mono">Diff Comparison</h3>
                     <p class="text-gray-400 text-sm leading-relaxed mb-4">
                         新旧の差分をPDFで可視化。変更・削除箇所をチェンジバーで明示し、確認工数を劇的に削減します。
                     </p>
@@ -375,10 +592,15 @@
 
                 <!-- Feature 4 -->
                 <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal">
-                    <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-bolt text-white"></i>
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bolt text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-bold text-white mb-1 leading-snug">大量ページもスピード組版</p>
+                            <h3 class="text-xs text-gray-400 font-mono tracking-wide">High Speed Layout</h3>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 font-mono">High Speed Layout</h3>
                     <p class="text-gray-400 text-sm leading-relaxed mb-4">
                         1000ページ規模の大量文書も高速処理。自動組版エンジンがPDF書き出しの待機時間を劇的に短縮します。
                     </p>
@@ -386,10 +608,15 @@
 
                 <!-- Feature 5 -->
                 <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-100">
-                    <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-earth-americas text-white"></i>
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-14 h-14 shrink-0 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-earth-americas text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-bold text-white mb-1 leading-snug">多言語展開をもっと効率的に</p>
+                            <h3 class="text-xs text-gray-400 font-mono tracking-wide">Global Translation</h3>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 font-mono">Global Translation</h3>
                     <p class="text-gray-400 text-sm leading-relaxed mb-4">
                         翻訳メモリと独自の仮翻訳エンジンにより、コストを最小化。世界42言語への展開を強力に支援します。
                     </p>
@@ -397,10 +624,15 @@
 
                 <!-- Feature 6 (Project Management) -->
                 <div class="group glass-panel p-8 rounded-2xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 reveal transition-delay-200 bg-gradient-to-br from-white/5 to-transparent">
-                    <div class="w-14 h-14 bg-gray-700 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-list-check text-white"></i>
+                    <div class="flex items-start gap-4 mb-6">
+                        <div class="w-14 h-14 shrink-0 bg-gray-700 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-list-check text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-bold text-white mb-1 leading-snug">制作進行を一元管理</p>
+                            <h3 class="text-xs text-gray-400 font-mono tracking-wide">Project Management</h3>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 font-mono">Project Management</h3>
                     <p class="text-gray-400 text-sm leading-relaxed mb-4">
                         プロジェクト全体を俯瞰する統合管理コンソール。進捗管理からユーザー管理までを一元化。
                     </p>
@@ -456,7 +688,6 @@
                             <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
                             <span>イラスト管理</span>
                         </li>
-                        <li class="flex items-start gap-2 management-more hidden">
                         <li class="flex items-start gap-2 management-more hidden">
                             <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
                             <span>テキストエンティティ管理</span>
@@ -666,7 +897,6 @@
                             <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
                             <span>トンボ有無</span>
                         </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
                         <li class="flex items-start gap-2 ml-6 publish-more hidden">
                             <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
                             <span>ラベル有無</span>
@@ -929,7 +1159,7 @@
                         デモンストレーションは可能ですか？
                     </h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        はい、デモンストレーションをご用意しています。実際の操作を体験していただき、ご質問にもお答えします。お気軽にお問い合わせください。
+                        はい、デモンストレーションをご用意しています。こちらで操作の様子をお見せしながら、ご質問にもお答えします。お気軽にお問い合わせください。
                     </p>
                 </div>
 
@@ -962,7 +1192,7 @@
                         提供方法について教えてください
                     </h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        odomasyはクラウドベースのサービスとして提供しています。インターネット接続があれば、どこからでもアクセス可能で、専用のサーバー構築やメンテナンスは不要です。最新の機能アップデートも自動的に反映され、常に最新の環境でご利用いただけます。セキュリティ面でも、クラウド環境での堅牢な保護機能を備えており、安心してご利用いただけます。
+                        odomasyはクラウドベースのサービスとして提供しています。インターネット接続があれば、どこからでもアクセス可能です。機能の追加や改善、運用・メンテナンスはサービス側で対応するため、常に最新の環境をご利用いただけます。セキュリティ面でも、クラウド環境での堅牢な保護機能を備えており、安心してご利用いただけます。
                     </p>
                 </div>
 
@@ -996,11 +1226,10 @@
         <div class="container mx-auto px-6 text-center reveal">
             <h2 class="text-4xl md:text-6xl font-bold mb-8">Ready to <span class="gradient-text">Evolve?</span></h2>
             <p class="text-gray-400 text-lg mb-12">
-                ドキュメント制作の未来は、ここから始まります。<br>
-                詳細な資料請求、デモンストレーションのご依頼はこちらから。
+                貴社の運用課題に合わせた改善イメージをご紹介します。
             </p>
             <a href="https://www.crestec.co.jp/contact/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-10 py-5 rounded-full bg-white text-black font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_50px_rgba(255,255,255,0.3)]" aria-label="お問い合わせ・デモ依頼（新しいタブで開きます）">
-                お問い合わせ・デモ依頼
+                お問い合わせ・無料デモ依頼
                 <i class="fa-solid fa-arrow-up-right-from-square ml-3" aria-hidden="true"></i>
             </a>
             <div data-lp-corp="cta-sub" data-lp-corp-theme="dark"></div>
@@ -1008,10 +1237,200 @@
     </section>
 
     <!-- Footer（LP共通：運営会社・公式サイト導線） -->
-    <div data-lp-corp="footer" data-lp-corp-theme="dark" data-lp-corp-copyright="© 2026 CRESTEC IT Document Center All Rights Reserved."></div>
+    <div data-lp-corp="footer" data-lp-corp-theme="dark" data-lp-corp-copyright="Copyright © CRESTEC Inc. All Rights Reserved."></div>
 
     <!-- Scripts -->
-    <script src="js/lp-corporate-links.js"></script>
+    <script>
+        /* lp-corporate-links.js（LP共通：コーポレートサイト導線） */
+        (function (global) {
+            'use strict';
+
+            const LP_CORPORATE_CONFIG = {
+                corporateUrl: 'https://www.crestec.co.jp/',
+                contactUrl: 'https://www.crestec.co.jp/contact/',
+                companyName: '株式会社クレステック',
+                copy: {
+                    header: '株式会社クレステック公式サイトへ',
+                    ctaSub: '会社情報を確認する',
+                    footerOfficial: '公式サイトを見る',
+                    footerContact: 'お問い合わせ',
+                    footerOperator: '運営会社：株式会社クレステック',
+                    footerNote:
+                        '本ページは株式会社クレステックが運営しています。会社情報・事業内容の詳細は、公式コーポレートサイトをご覧ください。',
+                },
+            };
+
+            const EXTERNAL_LABEL = '（新しいタブで開きます）';
+
+            function getTheme(el) {
+                const theme = el.getAttribute('data-lp-corp-theme');
+                return theme === 'light' ? 'light' : 'dark';
+            }
+
+            function applyThemeClass(el, theme) {
+                el.classList.add('lp-corp-theme-' + theme);
+            }
+
+            function externalIcon() {
+                const i = document.createElement('i');
+                i.className = 'fa-solid fa-arrow-up-right-from-square lp-corp-ext-icon';
+                i.setAttribute('aria-hidden', 'true');
+                return i;
+            }
+
+            function createExternalLink(href, text, className) {
+                const a = document.createElement('a');
+                a.href = href;
+                a.className = className;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.appendChild(document.createTextNode(text));
+                a.setAttribute('aria-label', text + EXTERNAL_LABEL);
+                a.appendChild(externalIcon());
+                return a;
+            }
+
+            function CorporateSiteLink(theme) {
+                const wrap = document.createElement('div');
+                applyThemeClass(wrap, theme);
+                const link = createExternalLink(
+                    LP_CORPORATE_CONFIG.corporateUrl,
+                    LP_CORPORATE_CONFIG.copy.header,
+                    'lp-corp-header-link'
+                );
+                wrap.appendChild(link);
+                return wrap;
+            }
+
+            function CompanyInfoSubLink(theme) {
+                const wrap = document.createElement('div');
+                wrap.className = 'lp-corp-cta-sub';
+                applyThemeClass(wrap, theme);
+                const link = createExternalLink(
+                    LP_CORPORATE_CONFIG.corporateUrl,
+                    LP_CORPORATE_CONFIG.copy.ctaSub,
+                    'lp-corp-cta-sub-link'
+                );
+                wrap.appendChild(link);
+                return wrap;
+            }
+
+            function LpFooter(theme, options) {
+                const opts = options || {};
+                const wrap = document.createElement('footer');
+                wrap.className = 'lp-corp-footer';
+                wrap.setAttribute('role', 'contentinfo');
+                applyThemeClass(wrap, theme);
+
+                const inner = document.createElement('div');
+                inner.className = 'lp-corp-footer-inner';
+
+                if (opts.showNote !== false) {
+                    const note = document.createElement('p');
+                    note.className = 'lp-corp-footer-note';
+                    note.textContent = LP_CORPORATE_CONFIG.copy.footerNote;
+                    inner.appendChild(note);
+                }
+
+                const operator = document.createElement('p');
+                operator.className = 'lp-corp-footer-operator';
+                operator.textContent = LP_CORPORATE_CONFIG.copy.footerOperator;
+                inner.appendChild(operator);
+
+                const links = document.createElement('ul');
+                links.className = 'lp-corp-footer-links';
+
+                const liOfficial = document.createElement('li');
+                liOfficial.appendChild(
+                    createExternalLink(
+                        LP_CORPORATE_CONFIG.corporateUrl,
+                        LP_CORPORATE_CONFIG.copy.footerOfficial,
+                        ''
+                    )
+                );
+
+                const liSep = document.createElement('li');
+                liSep.className = 'lp-corp-footer-sep';
+                liSep.setAttribute('aria-hidden', 'true');
+                liSep.textContent = '／';
+
+                const liContact = document.createElement('li');
+                liContact.appendChild(
+                    createExternalLink(
+                        LP_CORPORATE_CONFIG.contactUrl,
+                        LP_CORPORATE_CONFIG.copy.footerContact,
+                        ''
+                    )
+                );
+
+                links.appendChild(liOfficial);
+                links.appendChild(liSep);
+                links.appendChild(liContact);
+                inner.appendChild(links);
+
+                if (opts.copyright) {
+                    const copy = document.createElement('p');
+                    copy.className = 'lp-corp-footer-copy';
+                    copy.textContent = opts.copyright;
+                    inner.appendChild(copy);
+                }
+
+                wrap.appendChild(inner);
+                return wrap;
+            }
+
+            function mount() {
+                document.querySelectorAll('[data-lp-corp="header"]').forEach(function (el) {
+                    if (el.dataset.lpCorpMounted) return;
+                    const theme = getTheme(el);
+                    applyThemeClass(el, theme);
+                    el.appendChild(
+                        createExternalLink(
+                            LP_CORPORATE_CONFIG.corporateUrl,
+                            LP_CORPORATE_CONFIG.copy.header,
+                            'lp-corp-header-link'
+                        )
+                    );
+                    el.dataset.lpCorpMounted = '1';
+                });
+
+                document.querySelectorAll('[data-lp-corp="cta-sub"]').forEach(function (el) {
+                    if (el.dataset.lpCorpMounted) return;
+                    const theme = getTheme(el);
+                    el.appendChild(CompanyInfoSubLink(theme));
+                    el.dataset.lpCorpMounted = '1';
+                });
+
+                document.querySelectorAll('[data-lp-corp="footer"]').forEach(function (el) {
+                    if (el.dataset.lpCorpMounted) return;
+                    const theme = getTheme(el);
+                    const copyright = el.getAttribute('data-lp-corp-copyright') || '';
+                    const showNote = el.getAttribute('data-lp-corp-note') !== 'false';
+                    el.appendChild(
+                        LpFooter(theme, {
+                            copyright: copyright || undefined,
+                            showNote: showNote,
+                        })
+                    );
+                    el.dataset.lpCorpMounted = '1';
+                });
+            }
+
+            global.LpCorporateLinks = {
+                CONFIG: LP_CORPORATE_CONFIG,
+                CorporateSiteLink: CorporateSiteLink,
+                CompanyInfoSubLink: CompanyInfoSubLink,
+                LpFooter: LpFooter,
+                mount: mount,
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', mount);
+            } else {
+                mount();
+            }
+        })(typeof window !== 'undefined' ? window : this);
+    </script>
     <script>
         // Navbar Scroll Effect
         const navbar = document.getElementById('navbar');
