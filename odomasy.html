@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>odomasy - 次世代ドキュメント統合管理システム</title>
+    <title>odomasy - 次世代ドキュメント統合管理システム（デモ依頼特化版）</title>
     <meta name="description" content="odomasy（オドマシー）は、執筆・翻訳・組版をクラウド上で統合する次世代ドキュメント統合管理システムです。XMLベースの構造化管理と高速な自動組版、翻訳支援機能により、大規模マニュアル制作を効率化します。">
     <meta property="og:type" content="website">
     <meta property="og:title" content="odomasy - 次世代ドキュメント統合管理システム">
@@ -368,6 +368,177 @@
             font-size: 0.75rem;
             opacity: 0.7;
         }
+
+        /* Coverage card & feature modal */
+        .coverage-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: inherit;
+            font: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .coverage-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .coverage-card:focus-visible {
+            outline: 2px solid #22d3ee;
+            outline-offset: 2px;
+        }
+
+        .coverage-card-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: auto;
+            padding: 0.75rem 1rem;
+            border-radius: 0.625rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            width: 100%;
+            transition: all 0.25s ease;
+        }
+
+        .coverage-card-action-cyan {
+            color: #67e8f9;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.45);
+        }
+
+        .coverage-card-action-purple {
+            color: #e9d5ff;
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.45);
+        }
+
+        .coverage-card-action-indigo {
+            color: #a5b4fc;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.45);
+        }
+
+        .coverage-card-action-green {
+            color: #86efac;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.45);
+        }
+
+        .coverage-card:hover .coverage-card-action-cyan {
+            background: rgba(6, 182, 212, 0.28);
+            border-color: rgba(34, 211, 238, 0.7);
+            box-shadow: 0 0 16px rgba(6, 182, 212, 0.25);
+        }
+
+        .coverage-card:hover .coverage-card-action-purple {
+            background: rgba(168, 85, 247, 0.28);
+            border-color: rgba(192, 132, 252, 0.7);
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.25);
+        }
+
+        .coverage-card:hover .coverage-card-action-indigo {
+            background: rgba(99, 102, 241, 0.28);
+            border-color: rgba(129, 140, 248, 0.7);
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+        }
+
+        .coverage-card:hover .coverage-card-action-green {
+            background: rgba(34, 197, 94, 0.28);
+            border-color: rgba(74, 222, 128, 0.7);
+            box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
+        }
+
+        .coverage-card:hover .coverage-card-action i.fa-chevron-right {
+            transform: translateX(3px);
+        }
+
+        .coverage-card-action i.fa-chevron-right {
+            transition: transform 0.25s ease;
+            font-size: 0.75rem;
+        }
+
+        .feature-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .feature-modal.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .feature-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+        }
+
+        .feature-modal-panel {
+            position: relative;
+            width: 100%;
+            max-width: 36rem;
+            max-height: 85vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 1rem;
+            transform: translateY(16px) scale(0.98);
+            transition: transform 0.25s ease;
+        }
+
+        .feature-modal.is-open .feature-modal-panel {
+            transform: translateY(0) scale(1);
+        }
+
+        .feature-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        .feature-modal-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .feature-modal-close {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .feature-modal-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -388,13 +559,12 @@
 
                 <!-- Desktop nav -->
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="#features" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="features">機能</a>
-                    <a href="#detailed-features" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="detailed-features">機能詳細</a>
-                    <a href="#architecture" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="architecture">システム構成</a>
-                    <a href="#languages" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="languages">対応言語</a>
+                    <a href="#features" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="features">特徴</a>
+                    <a href="#for-whom" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="for-whom">おすすめ企業</a>
+                    <a href="#demo" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="demo">デモ内容</a>
                     <a href="#faq" class="nav-link text-sm text-gray-400 hover:text-cyan-400 transition-colors" data-section="faq">FAQ</a>
-                    <a href="#contact" class="nav-link px-6 py-2 rounded-full bg-white/10 hover:bg-cyan-500/20 border border-white/10 hover:border-cyan-500/50 text-white transition-all duration-300 text-sm font-medium backdrop-blur-sm" data-section="contact">
-                        お問い合わせ
+                    <a href="#contact" class="nav-link px-6 py-2 rounded-full bg-cyan-600 hover:bg-cyan-500 border border-cyan-500/50 text-white transition-all duration-300 text-sm font-bold backdrop-blur-sm" data-section="contact">
+                        無料デモ依頼
                     </a>
                 </div>
             </div>
@@ -403,12 +573,11 @@
         <!-- Mobile menu -->
         <div id="mobile-menu" class="md:hidden hidden border-t border-white/10 bg-brand-navy/95 backdrop-blur-md">
             <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-2">
-                <a href="#features" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="features">機能</a>
-                <a href="#detailed-features" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="detailed-features">機能詳細</a>
-                <a href="#architecture" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="architecture">システム構成</a>
-                <a href="#languages" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="languages">対応言語</a>
+                <a href="#features" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="features">特徴</a>
+                <a href="#for-whom" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="for-whom">おすすめ企業</a>
+                <a href="#demo" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="demo">デモ内容</a>
                 <a href="#faq" class="nav-link text-sm text-gray-200 hover:text-cyan-400 transition-colors py-2" data-section="faq">FAQ</a>
-                <a href="#contact" class="nav-link mt-2 inline-flex items-center justify-center px-6 py-3 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all" data-section="contact">お問い合わせ</a>
+                <a href="#contact" class="nav-link mt-2 inline-flex items-center justify-center px-6 py-3 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all" data-section="contact">無料デモ依頼</a>
             </div>
         </div>
     </nav>
@@ -437,17 +606,18 @@
             </h1>
             
             <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
-                日本企業のドキュメント制作を<span class="text-cyan-400 font-bold">進化させる</span><br>
-                執筆・翻訳・組版・改訂管理まで、<br>ドキュメント制作業務を一元化する、次世代クラウドプラットフォーム
+                ドキュメント制作の<span class="text-cyan-400 font-bold">「分断・手戻り・品質ばらつき」</span>を、<br>
+                ひとつのクラウドで解決。<br>
+                <span class="text-white">まずは30分の無料デモで、御社の運用に当てはめてご紹介します。</span>
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center gap-6">
-                <a href="#features" class="group relative px-8 py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg text-white font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.6)]">
-                    機能を見る
-                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                <a href="#features" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white font-medium backdrop-blur-sm transition-all">
+                    3分でわかる特徴を見る
                 </a>
-                <a href="#contact" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white font-medium backdrop-blur-sm transition-all">
+                <a href="#contact" class="group relative px-8 py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg text-white font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.6)]">
                     無料デモを依頼
+                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
         </div>
@@ -536,8 +706,8 @@
 
         <div class="container mx-auto px-6 relative z-10">
             <div class="text-center mb-20 reveal">
-                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">Core Features</h2>
-                <p class="text-gray-400">プロフェッショナルの要求に応える、妥協なき機能群</p>
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">odomasyでできること</h2>
+                <p class="text-gray-400">プロフェッショナルの現場課題を、6つの力で解決</p>
                 <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
             </div>
 
@@ -633,438 +803,298 @@
                             <h3 class="text-xs text-gray-400 font-mono tracking-wide">Project Management</h3>
                         </div>
                     </div>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    <p class="text-gray-400 text-sm leading-relaxed">
                         プロジェクト全体を俯瞰する統合管理コンソール。進捗管理からユーザー管理までを一元化。
                     </p>
-                    <div class="mt-4 inline-block px-3 py-1 rounded bg-white/10 text-xs text-white">
-                        導入実績: 大手家電メーカー他
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Detailed Features -->
-    <section id="detailed-features" class="py-32 bg-brand-dark relative">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20 reveal">
-                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">Detailed Features</h2>
-                <p class="text-gray-400">包括的な機能群で、あらゆるドキュメント制作ニーズに対応</p>
-                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-7xl mx-auto items-start">
-                <!-- Project Management -->
-                <div class="glass-panel p-8 rounded-2xl border-l-4 border-cyan-500 reveal feature-card" id="management-card">
-                    <div class="feature-card-content">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
-                                <i class="fa-solid fa-list-check text-white text-xl"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold font-mono">管理機能</h3>
-                        </div>
-                        <ul class="space-y-2 text-sm text-gray-300">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>プロジェクト作成/編集/削除</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>マニュアル作成/編集/削除</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>言語作成/編集/削除</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>プロジェクト/マニュアル流用</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>XMLアップロード/ダウンロード</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>イラスト管理</span>
-                        </li>
-                        <li class="flex items-start gap-2 management-more hidden">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>テキストエンティティ管理</span>
-                        </li>
-                        <li class="flex items-start gap-2 management-more hidden">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>執筆者/翻訳者アサインメント</span>
-                        </li>
-                        <li class="flex items-start gap-2 management-more hidden">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>ドラフト管理</span>
-                        </li>
-                        <li class="flex items-start gap-2 management-more hidden">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>翻訳進捗管理</span>
-                        </li>
-                        <li class="flex items-start gap-2 management-more hidden">
-                            <i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i>
-                            <span>ユーザー管理</span>
-                        </li>
-                        </ul>
-                        <div class="feature-card-gradient"></div>
-                    </div>
-                    <button onclick="toggleManagement()" class="mt-4 text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-2 transition-colors relative z-10">
-                        <span id="management-toggle-text">もっと見る</span>
-                        <i id="management-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                </div>
-
-                <!-- Writing Features -->
-                <div class="glass-panel p-8 rounded-2xl border-l-4 border-purple-500 reveal transition-delay-100 feature-card" id="writing-card">
-                    <div class="feature-card-content">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                <i class="fa-solid fa-pen text-white text-xl"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold font-mono">執筆機能</h3>
-                        </div>
-                        <ul class="space-y-2 text-sm text-gray-300">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>プレビュー表示</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>構造ツリー/目次ツリー表示</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>構造編集・テキスト編集</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>表編集</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>イラスト挿入</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>テキストエンティティ挿入</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>特殊文字挿入</span>
-                        </li>
-                        <li class="flex items-start gap-2 writing-more hidden">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>相互参照挿入</span>
-                        </li>
-                        <li class="flex items-start gap-2 writing-more hidden">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>索引マーカー挿入</span>
-                        </li>
-                        <li class="flex items-start gap-2 writing-more hidden">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>QAチェック・バリデーション</span>
-                        </li>
-                        <li class="flex items-start gap-2 writing-more hidden">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>編集履歴表示</span>
-                        </li>
-                        <li class="flex items-start gap-2 writing-more hidden">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>変更箇所色づけ表示</span>
-                        </li>
-                        <li class="flex items-start gap-2 writing-more hidden">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>コメント付与</span>
-                        </li>
-                        </ul>
-                        <div class="feature-card-gradient"></div>
-                    </div>
-                    <button onclick="toggleWriting()" class="mt-4 text-purple-400 hover:text-purple-300 text-sm flex items-center gap-2 transition-colors relative z-10">
-                        <span id="writing-toggle-text">もっと見る</span>
-                        <i id="writing-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                </div>
-
-                <!-- Translation Support -->
-                <div class="glass-panel p-8 rounded-2xl border-l-4 border-indigo-500 reveal transition-delay-200 feature-card" id="translation-card">
-                    <div class="feature-card-content">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center">
-                                <i class="fa-solid fa-language text-white text-xl"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold font-mono">翻訳支援機能</h3>
-                        </div>
-                        <ul class="space-y-2 text-sm text-gray-300">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>TMXアップロード/ダウンロード</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>メモリメンテナンス</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>用語管理</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>仮翻訳</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>プレビュー表示</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>セグメント/テキスト検索</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>繰り返しセグメント訳文流用</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>ファジーセグメント訳文流用</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i>
-                            <span>スペルチェッカー</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>QAチェック</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>原文/訳文テキスト検索</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>セントラルメモリマージ</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>翻訳メモリメンテナンス</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>用語集メンテナンス</span>
-                        </li>
-                        <li class="flex items-start gap-2 translation-more hidden">
-                            <i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i>
-                            <span>コメント付与</span>
-                        </li>
-                        </ul>
-                        <div class="feature-card-gradient"></div>
-                    </div>
-                    <button onclick="toggleTranslation()" class="mt-4 text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-2 transition-colors relative z-10">
-                        <span id="translation-toggle-text">もっと見る</span>
-                        <i id="translation-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                </div>
-
-                <!-- Publish Features -->
-                <div class="glass-panel p-8 rounded-2xl border-l-4 border-green-500 reveal feature-card" id="publish-card">
-                    <div class="feature-card-content">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
-                                <i class="fa-solid fa-file-pdf text-white text-xl"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold font-mono">パブリッシュ機能</h3>
-                        </div>
-                        <ul class="space-y-2 text-sm text-gray-300">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
-                            <span>PDF出力</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>改ページ処理有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>章扉の有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>タイトルの背景色有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>トンボ有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>ラベル有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>パスワードによるセキュリティ有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>カラーON/OFF</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>条件別テキストの表示</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>生成されるPDFページ調整</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>ページ番号有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>索引有無</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>ページ開始番号を指定</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>ヘッダー表示有無</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
-                            <span>校正用PDF出力</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>図版用画像ファイル名の表示</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>図版の通し番号の表示</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>表の通し番号の表示</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>テキストエンティティ箇所の色付け</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>翻訳不要箇所の色付け</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>定型文の色付け</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>相互参照箇所の色付け</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>条件別テキスト</span>
-                        </li>
-                        <li class="flex items-start gap-2 ml-6 publish-more hidden">
-                            <i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i>
-                            <span>変更履歴箇所色付け</span>
-                        </li>
-                        <li class="flex items-start gap-2 publish-more hidden">
-                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
-                            <span>HTML出力</span>
-                        </li>
-                        <li class="flex items-start gap-2 publish-more hidden">
-                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
-                            <span>XML差分比較</span>
-                        </li>
-                        <li class="flex items-start gap-2 publish-more hidden">
-                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
-                            <span>新旧XMLの差分を可視化</span>
-                        </li>
-                        <li class="flex items-start gap-2 publish-more hidden">
-                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
-                            <span>変更箇所の詳細表示</span>
-                        </li>
-                        <li class="flex items-start gap-2 publish-more hidden">
-                            <i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i>
-                            <span>PDF差分出力</span>
-                        </li>
-                        </ul>
-                        <div class="feature-card-gradient"></div>
-                    </div>
-                    <button onclick="togglePublish()" class="mt-4 text-green-400 hover:text-green-300 text-sm flex items-center gap-2 transition-colors relative z-10">
-                        <span id="publish-toggle-text">もっと見る</span>
-                        <i id="publish-toggle-icon" class="fa-solid fa-chevron-down text-xs"></i>
-                    </button>
-                </div>
-            </div>
+    <!-- Mid CTA -->
+    <section class="py-16 bg-brand-navy relative border-t border-white/5">
+        <div class="container mx-auto px-6 text-center reveal">
+            <p class="text-gray-400 mb-6">御社の課題に合わせたデモをご用意します</p>
+            <a href="#contact" class="inline-flex items-center px-8 py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg text-white font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.6)]">
+                無料デモを依頼
+                <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </section>
 
-    <!-- Architecture & Specs -->
-    <section id="architecture" class="py-32 bg-brand-navy relative">
+    <!-- Coverage (4 Areas) -->
+    <section id="coverage" class="py-24 bg-brand-dark relative">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16 reveal">
-                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">System Architecture</h2>
-                <p class="text-gray-400 mb-4">堅牢なインフラストラクチャで、安定したパフォーマンスを実現</p>
-                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
+                <h2 class="font-mono text-3xl md:text-4xl font-bold mb-4">4つの領域をワンストップで</h2>
+                <p class="text-gray-400">管理・執筆・翻訳支援・組版をひとつのプラットフォームで</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
             </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <button type="button" class="coverage-card glass-panel p-6 rounded-2xl text-center reveal w-full" data-coverage-modal="management" aria-haspopup="dialog" aria-label="管理の機能一覧を見る">
+                    <div class="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-list-check text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2 text-center">管理</h3>
+                    <p class="text-gray-400 text-sm text-center mb-6">プロジェクト・進捗・ユーザーを一元管理</p>
+                    <span class="coverage-card-action coverage-card-action-cyan">
+                        <i class="fa-solid fa-list-ul"></i>
+                        機能一覧を見る
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                </button>
+                <button type="button" class="coverage-card glass-panel p-6 rounded-2xl text-center reveal transition-delay-100 w-full" data-coverage-modal="writing" aria-haspopup="dialog" aria-label="執筆の機能一覧を見る">
+                    <div class="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-pen text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2 text-center">執筆</h3>
+                    <p class="text-gray-400 text-sm text-center mb-6">構造化されたXMLベースの執筆環境</p>
+                    <span class="coverage-card-action coverage-card-action-purple">
+                        <i class="fa-solid fa-list-ul"></i>
+                        機能一覧を見る
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                </button>
+                <button type="button" class="coverage-card glass-panel p-6 rounded-2xl text-center reveal transition-delay-200 w-full" data-coverage-modal="translation" aria-haspopup="dialog" aria-label="翻訳支援の機能一覧を見る">
+                    <div class="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-language text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2 text-center">翻訳支援</h3>
+                    <p class="text-gray-400 text-sm text-center mb-6">翻訳メモリと進捗管理で効率化</p>
+                    <span class="coverage-card-action coverage-card-action-indigo">
+                        <i class="fa-solid fa-list-ul"></i>
+                        機能一覧を見る
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                </button>
+                <button type="button" class="coverage-card glass-panel p-6 rounded-2xl text-center reveal transition-delay-300 w-full" data-coverage-modal="publish" aria-haspopup="dialog" aria-label="組版の機能一覧を見る">
+                    <div class="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-bolt text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2 text-center">組版</h3>
+                    <p class="text-gray-400 text-sm text-center mb-6">高速な自動組版とPDF出力</p>
+                    <span class="coverage-card-action coverage-card-action-green">
+                        <i class="fa-solid fa-list-ul"></i>
+                        機能一覧を見る
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                </button>
+            </div>
+            <p class="text-center text-gray-500 text-sm mt-10 reveal">各カードをクリックすると機能一覧をご覧いただけます。詳しいご説明は無料デモで実際の操作をお見せします</p>
+        </div>
+    </section>
 
-            <!-- Server/Client Layout -->
-            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 mb-32">
-                <!-- Server -->
-                <div class="glass-panel p-8 rounded-2xl border-t-4 border-cyan-500 reveal">
-                    <h3 class="text-2xl font-mono font-bold mb-6 flex items-center gap-3 text-cyan-400">
-                        <i class="fa-solid fa-server"></i> Server Side
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between border-b border-gray-800 pb-2">
-                            <span class="text-gray-400 font-mono text-sm">Web Server</span>
-                            <span class="font-bold text-white">Apache</span>
-                        </div>
-                        <div class="flex justify-between border-b border-gray-800 pb-2">
-                            <span class="text-gray-400 font-mono text-sm">Database</span>
-                            <span class="font-bold text-white">MySQL</span>
-                        </div>
-                        <div class="flex justify-between border-b border-gray-800 pb-2">
-                            <span class="text-gray-400 font-mono text-sm">Language</span>
-                            <span class="font-bold text-white">PHP</span>
-                        </div>
-                        <div class="flex justify-between border-b border-gray-800 pb-2">
-                            <span class="text-gray-400 font-mono text-sm">Encryption</span>
-                            <span class="font-bold text-white">OpenSSL</span>
-                        </div>
+    <!-- Coverage Feature Modal -->
+    <div id="coverage-feature-modal" class="feature-modal" role="dialog" aria-modal="true" aria-labelledby="coverage-modal-title" aria-hidden="true">
+        <div class="feature-modal-backdrop" data-coverage-modal-close></div>
+        <div class="feature-modal-panel glass-panel">
+            <div class="feature-modal-header">
+                <h3 id="coverage-modal-title" class="text-xl font-bold font-mono"></h3>
+                <button type="button" class="feature-modal-close" data-coverage-modal-close aria-label="閉じる">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="feature-modal-body">
+                <ul id="coverage-modal-list" class="space-y-2 text-sm text-gray-300"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coverage modal content templates -->
+    <template id="coverage-modal-management">
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>プロジェクト作成/編集/削除</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>マニュアル作成/編集/削除</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>言語作成/編集/削除</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>プロジェクト/マニュアル流用</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>XMLアップロード/ダウンロード</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>イラスト管理</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>テキストエンティティ管理</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>執筆者/翻訳者アサインメント</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>ドラフト管理</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>翻訳進捗管理</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i><span>ユーザー管理</span></li>
+    </template>
+    <template id="coverage-modal-writing">
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>プレビュー表示</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>構造ツリー/目次ツリー表示</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>構造編集・テキスト編集</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>表編集</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>イラスト挿入</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>テキストエンティティ挿入</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>特殊文字挿入</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>相互参照挿入</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>索引マーカー挿入</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>QAチェック・バリデーション</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>編集履歴表示</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>変更箇所色づけ表示</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-purple-400 mt-1 text-xs"></i><span>コメント付与</span></li>
+    </template>
+    <template id="coverage-modal-translation">
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>TMXアップロード/ダウンロード</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>メモリメンテナンス</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>用語管理</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>仮翻訳</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>プレビュー表示</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>セグメント/テキスト検索</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>繰り返しセグメント訳文流用</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>ファジーセグメント訳文流用</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>スペルチェッカー</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>QAチェック</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>原文/訳文テキスト検索</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>セントラルメモリマージ</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>翻訳メモリメンテナンス</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>用語集メンテナンス</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>コメント付与</span></li>
+    </template>
+    <template id="coverage-modal-publish">
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i><span>PDF出力</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>改ページ処理有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>章扉の有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>タイトルの背景色有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>トンボ有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>ラベル有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>パスワードによるセキュリティ有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>カラーON/OFF</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>条件別テキストの表示</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>生成されるPDFページ調整</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>ページ番号有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>索引有無</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>ページ開始番号を指定</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>ヘッダー表示有無</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i><span>校正用PDF出力</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>図版用画像ファイル名の表示</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>図版の通し番号の表示</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>表の通し番号の表示</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>テキストエンティティ箇所の色付け</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>翻訳不要箇所の色付け</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>定型文の色付け</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>相互参照箇所の色付け</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>条件別テキスト</span></li>
+        <li class="flex items-start gap-2 ml-6"><i class="fa-solid fa-circle text-green-400 mt-1 text-xs" style="font-size: 0.4rem;"></i><span>変更履歴箇所色付け</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i><span>HTML出力</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i><span>XML差分比較</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i><span>新旧XMLの差分を可視化</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i><span>変更箇所の詳細表示</span></li>
+        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-green-400 mt-1 text-xs"></i><span>PDF差分出力</span></li>
+    </template>
+
+    <!-- For Whom -->
+    <section id="for-whom" class="py-32 bg-brand-navy relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">このような企業におすすめ</h2>
+                <p class="text-gray-400">御社の課題に当てはまるか、まずはデモでご確認ください</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                <div class="glass-panel p-8 rounded-2xl reveal flex items-start gap-4">
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                        <i class="fa-solid fa-book"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">大量のマニュアルを制作している企業</h3>
+                        <p class="text-gray-400 text-sm">取扱説明書・サービスマニュアルなど、ページ数が多く改訂も頻繁な現場向け</p>
                     </div>
                 </div>
-
-                <!-- Client -->
-                <div class="glass-panel p-8 rounded-2xl border-t-4 border-purple-500 reveal transition-delay-100">
-                    <h3 class="text-2xl font-mono font-bold mb-6 flex items-center gap-3 text-purple-400">
-                        <i class="fa-solid fa-desktop"></i> Client Side
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="bg-white/5 p-4 rounded-lg mb-4">
-                            <p class="text-sm text-gray-300 mb-2">Webブラウザベースの専用アプリケーション</p>
-                            <div class="flex gap-2">
-                                <span class="px-2 py-1 bg-black/50 rounded text-xs text-gray-400 border border-gray-700">Windows</span>
-                                <span class="px-2 py-1 bg-black/50 rounded text-xs text-gray-400 border border-gray-700">.NET Framework</span>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <div class="text-xs text-purple-400 font-mono mb-1">INPUT</div>
-                                <div class="font-bold">XML, EPS</div>
-                            </div>
-                            <div>
-                                <div class="text-xs text-purple-400 font-mono mb-1">OUTPUT</div>
-                                <div class="font-bold">XML, PDF, HTML</div>
-                            </div>
-                        </div>
+                <div class="glass-panel p-8 rounded-2xl reveal transition-delay-100 flex items-start gap-4">
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                        <i class="fa-solid fa-code-branch"></i>
                     </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">執筆・翻訳・DTPが分断されている</h3>
+                        <p class="text-gray-400 text-sm">工程ごとにツールやファイル受け渡しが分かれ、進捗が見えにくいチーム向け</p>
+                    </div>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl reveal flex items-start gap-4">
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">改訂のたびに差分確認に時間がかかる</h3>
+                        <p class="text-gray-400 text-sm">新旧比較や品質チェックの工数を削減したいドキュメント管理部門向け</p>
+                    </div>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl reveal transition-delay-100 flex items-start gap-4">
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">多言語展開を検討している</h3>
+                        <p class="text-gray-400 text-sm">世界42言語への展開を、コストと品質のバランスを保ちながら進めたい企業向け</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo -->
+    <section id="demo" class="py-32 bg-brand-dark relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">無料デモでわかること</h2>
+                <p class="text-gray-400">約30分のオンラインデモで、御社の課題に合わせてご紹介します</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-cyan-500 reveal">
+                    <div class="text-cyan-400 font-mono text-sm mb-3">CHECK 01</div>
+                    <h3 class="text-xl font-bold mb-3">御社に近い運用での画面デモ</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">お客様の制作フローに近いケースを選び、実際の操作画面をお見せします。</p>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-purple-500 reveal transition-delay-100">
+                    <div class="text-purple-400 font-mono text-sm mb-3">CHECK 02</div>
+                    <h3 class="text-xl font-bold mb-3">執筆 → 翻訳 → 組版 → 差分確認の流れ</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">一連のワークフローを通して、odomasyで何が変わるかを体感いただけます。</p>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-indigo-500 reveal">
+                    <div class="text-indigo-400 font-mono text-sm mb-3">CHECK 03</div>
+                    <h3 class="text-xl font-bold mb-3">気になる機能をその場で質問</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">「うちの場合はどう使える？」といった具体的なご質問にもその場でお答えします。</p>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-green-500 reveal transition-delay-100">
+                    <div class="text-green-400 font-mono text-sm mb-3">CHECK 04</div>
+                    <h3 class="text-xl font-bold mb-3">導入イメージと次のステップ</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">デモ後に、導入の進め方や最適なプランの方向性をご提案します。</p>
+                </div>
+            </div>
+            <div class="text-center mt-16 reveal">
+                <a href="#contact" class="inline-flex items-center px-8 py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg text-white font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                    無料デモを依頼する
+                    <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust -->
+    <section id="trust" class="py-32 bg-brand-navy relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-mono text-4xl md:text-5xl font-bold mb-4">信頼・実績</h2>
+                <p class="text-gray-400">長年のドキュメント制作の知見を、クラウドで提供</p>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mt-4"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="glass-panel p-8 rounded-2xl text-center reveal">
+                    <div class="w-14 h-14 mx-auto mb-6 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-building text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">導入実績</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">大手家電メーカーをはじめ、製造・IT・サービス業など多様な業種でodomasyをご利用いただいています。</p>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl text-center reveal transition-delay-100">
+                    <div class="w-14 h-14 mx-auto mb-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-award text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">クレステックの実績</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">ドキュメント制作・翻訳・組版の現場知見をもとに開発。制作現場が本当に使えるシステムを追求しています。</p>
+                </div>
+                <div class="glass-panel p-8 rounded-2xl text-center reveal transition-delay-200">
+                    <div class="w-14 h-14 mx-auto mb-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-shield-halved text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">セキュリティ・クラウド運用</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">クラウド環境での堅牢なセキュリティ。運用・メンテナンスはサービス側で対応し、常に最新の環境をご利用いただけます。</p>
                 </div>
             </div>
         </div>
@@ -1224,10 +1254,9 @@
     <!-- CTA Section -->
     <section id="contact" class="py-48 relative bg-gradient-to-b from-brand-navy to-black">
         <div class="container mx-auto px-6 text-center reveal">
-            <h2 class="text-4xl md:text-6xl font-bold mb-8">Ready to <span class="gradient-text">Evolve?</span></h2>
+            <h2 class="text-4xl md:text-6xl font-bold mb-8">まずは<span class="gradient-text">無料デモ</span>から</h2>
             <p class="text-gray-400 text-lg mb-12">
-                デモンストレーションのご依頼はお気軽にご連絡ください。<br>
-                貴社の運用課題に合わせた改善イメージをご紹介します。
+                約30分のオンラインデモで、御社の課題に合わせてご紹介します。
             </p>
             <a href="https://www.crestec.co.jp/contact/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-10 py-5 rounded-full bg-white text-black font-bold text-lg hover:scale-105 transition-transform shadow-[0_0_50px_rgba(255,255,255,0.3)]" aria-label="お問い合わせ・デモ依頼（新しいタブで開きます）">
                 お問い合わせ・無料デモ依頼
@@ -1493,280 +1522,53 @@
             observer.observe(el);
         });
 
-        // Toggle PDF Output features
-        function togglePdfOutput() {
-            const moreItems = document.querySelectorAll('.pdf-output-more');
-            const toggleText = document.getElementById('pdf-output-toggle-text');
-            const toggleIcon = document.getElementById('pdf-output-toggle-icon');
-            
-            moreItems.forEach(item => {
-                item.classList.toggle('hidden');
-            });
-            
-            if (toggleText.textContent === 'もっと見る') {
-                toggleText.textContent = '閉じる';
-                toggleIcon.classList.remove('fa-chevron-down');
-                toggleIcon.classList.add('fa-chevron-up');
-            } else {
-                toggleText.textContent = 'もっと見る';
-                toggleIcon.classList.remove('fa-chevron-up');
-                toggleIcon.classList.add('fa-chevron-down');
-            }
+        // Coverage feature modal
+        const coverageModal = document.getElementById('coverage-feature-modal');
+        const coverageModalTitle = document.getElementById('coverage-modal-title');
+        const coverageModalList = document.getElementById('coverage-modal-list');
+        const coverageModalTitles = {
+            management: '管理機能',
+            writing: '執筆機能',
+            translation: '翻訳支援機能',
+            publish: 'パブリッシュ機能'
+        };
+
+        function openCoverageModal(type) {
+            const template = document.getElementById('coverage-modal-' + type);
+            if (!template || !coverageModal) return;
+
+            coverageModalTitle.textContent = coverageModalTitles[type] || '';
+            coverageModalList.innerHTML = '';
+            coverageModalList.appendChild(template.content.cloneNode(true));
+
+            coverageModal.classList.add('is-open');
+            coverageModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
         }
 
-        // Toggle Proof PDF features
-        function toggleProofPdf() {
-            const moreItems = document.querySelectorAll('.proof-pdf-more');
-            const toggleText = document.getElementById('proof-pdf-toggle-text');
-            const toggleIcon = document.getElementById('proof-pdf-toggle-icon');
-            
-            moreItems.forEach(item => {
-                item.classList.toggle('hidden');
-            });
-            
-            if (toggleText.textContent === 'もっと見る') {
-                toggleText.textContent = '閉じる';
-                toggleIcon.classList.remove('fa-chevron-down');
-                toggleIcon.classList.add('fa-chevron-up');
-            } else {
-                toggleText.textContent = 'もっと見る';
-                toggleIcon.classList.remove('fa-chevron-up');
-                toggleIcon.classList.add('fa-chevron-down');
-            }
+        function closeCoverageModal() {
+            if (!coverageModal) return;
+            coverageModal.classList.remove('is-open');
+            coverageModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
         }
 
-        // Equalize card heights when closed
-        function equalizeCardHeights() {
-            const cards = document.querySelectorAll('.feature-card:not(.expanded)');
-            if (cards.length === 0) return;
-            
-            let maxHeight = 0;
-            cards.forEach(card => {
-                // 一時的に高さの制限を解除して実際の高さを測定
-                const originalMinHeight = card.style.minHeight;
-                card.style.minHeight = 'auto';
-                const height = card.offsetHeight;
-                card.style.minHeight = originalMinHeight;
-                if (height > maxHeight) {
-                    maxHeight = height;
-                }
+        document.querySelectorAll('[data-coverage-modal]').forEach(card => {
+            card.addEventListener('click', () => {
+                openCoverageModal(card.getAttribute('data-coverage-modal'));
             });
-            
-            // すべての閉じたカードに最大高さを適用
-            cards.forEach(card => {
-                card.style.height = maxHeight + 'px';
-            });
-        }
-
-        // Close all other cards
-        function closeOtherCards(currentCardId) {
-            const cardIds = ['management-card', 'writing-card', 'translation-card', 'publish-card'];
-            const cardConfigs = {
-                'management-card': {
-                    moreItems: '.management-more',
-                    toggleText: 'management-toggle-text',
-                    toggleIcon: 'management-toggle-icon'
-                },
-                'writing-card': {
-                    moreItems: '.writing-more',
-                    toggleText: 'writing-toggle-text',
-                    toggleIcon: 'writing-toggle-icon'
-                },
-                'translation-card': {
-                    moreItems: '.translation-more',
-                    toggleText: 'translation-toggle-text',
-                    toggleIcon: 'translation-toggle-icon'
-                },
-                'publish-card': {
-                    moreItems: '.publish-more',
-                    toggleText: 'publish-toggle-text',
-                    toggleIcon: 'publish-toggle-icon'
-                }
-            };
-
-            cardIds.forEach(cardId => {
-                if (cardId !== currentCardId) {
-                    const card = document.getElementById(cardId);
-                    if (card && card.classList.contains('expanded')) {
-                        const config = cardConfigs[cardId];
-                        const moreItems = card.querySelectorAll(config.moreItems);
-                        const toggleText = document.getElementById(config.toggleText);
-                        const toggleIcon = document.getElementById(config.toggleIcon);
-                        
-                        moreItems.forEach(item => {
-                            item.classList.add('hidden');
-                        });
-                        
-                        if (toggleText && toggleIcon) {
-                            toggleText.textContent = 'もっと見る';
-                            toggleIcon.classList.remove('fa-chevron-up');
-                            toggleIcon.classList.add('fa-chevron-down');
-                        }
-                        card.classList.remove('expanded');
-                        card.style.height = ''; // 高さの制限を解除
-                    }
-                }
-            });
-            // 閉じたカードの高さを再計算
-            setTimeout(() => {
-                equalizeCardHeights();
-            }, 10);
-        }
-
-        // Toggle Management features
-        function toggleManagement() {
-            const card = document.getElementById('management-card');
-            const moreItems = card.querySelectorAll('.management-more');
-            const toggleText = document.getElementById('management-toggle-text');
-            const toggleIcon = document.getElementById('management-toggle-icon');
-            
-            const isExpanding = toggleText.textContent === 'もっと見る';
-            
-            if (isExpanding) {
-                closeOtherCards('management-card');
-                card.style.height = ''; // 展開時は高さの制限を解除
-            }
-            
-            moreItems.forEach(item => {
-                item.classList.toggle('hidden');
-            });
-            
-            if (isExpanding) {
-                toggleText.textContent = '閉じる';
-                toggleIcon.classList.remove('fa-chevron-down');
-                toggleIcon.classList.add('fa-chevron-up');
-                card.classList.add('expanded');
-            } else {
-                toggleText.textContent = 'もっと見る';
-                toggleIcon.classList.remove('fa-chevron-up');
-                toggleIcon.classList.add('fa-chevron-down');
-                card.classList.remove('expanded');
-                card.style.height = '';
-                setTimeout(() => {
-                    equalizeCardHeights();
-                }, 10);
-            }
-        }
-
-        // Toggle Writing features
-        function toggleWriting() {
-            const card = document.getElementById('writing-card');
-            const moreItems = card.querySelectorAll('.writing-more');
-            const toggleText = document.getElementById('writing-toggle-text');
-            const toggleIcon = document.getElementById('writing-toggle-icon');
-            
-            const isExpanding = toggleText.textContent === 'もっと見る';
-            
-            if (isExpanding) {
-                closeOtherCards('writing-card');
-                card.style.height = ''; // 展開時は高さの制限を解除
-            }
-            
-            moreItems.forEach(item => {
-                item.classList.toggle('hidden');
-            });
-            
-            if (isExpanding) {
-                toggleText.textContent = '閉じる';
-                toggleIcon.classList.remove('fa-chevron-down');
-                toggleIcon.classList.add('fa-chevron-up');
-                card.classList.add('expanded');
-            } else {
-                toggleText.textContent = 'もっと見る';
-                toggleIcon.classList.remove('fa-chevron-up');
-                toggleIcon.classList.add('fa-chevron-down');
-                card.classList.remove('expanded');
-                card.style.height = '';
-                setTimeout(() => {
-                    equalizeCardHeights();
-                }, 10);
-            }
-        }
-
-        // Toggle Translation features
-        function toggleTranslation() {
-            const card = document.getElementById('translation-card');
-            const moreItems = card.querySelectorAll('.translation-more');
-            const toggleText = document.getElementById('translation-toggle-text');
-            const toggleIcon = document.getElementById('translation-toggle-icon');
-            
-            const isExpanding = toggleText.textContent === 'もっと見る';
-            
-            if (isExpanding) {
-                closeOtherCards('translation-card');
-                card.style.height = ''; // 展開時は高さの制限を解除
-            }
-            
-            moreItems.forEach(item => {
-                item.classList.toggle('hidden');
-            });
-            
-            if (isExpanding) {
-                toggleText.textContent = '閉じる';
-                toggleIcon.classList.remove('fa-chevron-down');
-                toggleIcon.classList.add('fa-chevron-up');
-                card.classList.add('expanded');
-            } else {
-                toggleText.textContent = 'もっと見る';
-                toggleIcon.classList.remove('fa-chevron-up');
-                toggleIcon.classList.add('fa-chevron-down');
-                card.classList.remove('expanded');
-                card.style.height = '';
-                setTimeout(() => {
-                    equalizeCardHeights();
-                }, 10);
-            }
-        }
-
-        // Toggle Publish features
-        function togglePublish() {
-            const card = document.getElementById('publish-card');
-            const moreItems = card.querySelectorAll('.publish-more');
-            const toggleText = document.getElementById('publish-toggle-text');
-            const toggleIcon = document.getElementById('publish-toggle-icon');
-            
-            const isExpanding = toggleText.textContent === 'もっと見る';
-            
-            if (isExpanding) {
-                closeOtherCards('publish-card');
-                card.style.height = ''; // 展開時は高さの制限を解除
-            }
-            
-            moreItems.forEach(item => {
-                item.classList.toggle('hidden');
-            });
-            
-            if (isExpanding) {
-                toggleText.textContent = '閉じる';
-                toggleIcon.classList.remove('fa-chevron-down');
-                toggleIcon.classList.add('fa-chevron-up');
-                card.classList.add('expanded');
-            } else {
-                toggleText.textContent = 'もっと見る';
-                toggleIcon.classList.remove('fa-chevron-up');
-                toggleIcon.classList.add('fa-chevron-down');
-                card.classList.remove('expanded');
-                card.style.height = ''; // 高さの制限を解除
-                // 少し遅延を入れてから高さを再計算
-                setTimeout(() => {
-                    equalizeCardHeights();
-                }, 10);
-            }
-        }
-
-        // ページ読み込み時とリサイズ時に高さを統一
-        window.addEventListener('load', () => {
-            equalizeCardHeights();
         });
 
-        window.addEventListener('resize', () => {
-            // 展開されていないカードの高さを再計算
-            const expandedCards = document.querySelectorAll('.feature-card.expanded');
-            expandedCards.forEach(card => {
-                card.style.height = '';
-            });
-            equalizeCardHeights();
+        document.querySelectorAll('[data-coverage-modal-close]').forEach(el => {
+            el.addEventListener('click', closeCoverageModal);
         });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && coverageModal && coverageModal.classList.contains('is-open')) {
+                closeCoverageModal();
+            }
+        });
+
     </script>
 </body>
 </html>
